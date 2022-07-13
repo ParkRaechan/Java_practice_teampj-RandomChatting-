@@ -6,7 +6,32 @@
 </head>
 <body>
 <div th:replace="header.html :: header"></div>
-메인페이지
+<div id="yuor_ip">yuor_ip</div>
+<div id="your_coordinate">your_coordinate</div>
+
+
+<header class="d-flex flex-wrap justify-content-center p-3">
+    <ul class="nav">
+        <li class="nav-item"> <a class="nav-link text-dark" type="button"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"> 시작하기 </a> </li>
+    </ul>
+</header>
+
+<!-- 채팅방 사이드바 [ 오프캔버스 ] -->
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasScrollingLabel"> 자유 채팅방 </h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div id="contentbox"> <!-- 채팅내용 출력 box -->
+        </div>
+        <div class="input-group my-3">
+            <input class="form-control" type="text" id="msg"> <!-- 채팅내용 입력 input -->
+            <button class="btn btn-outline-secondary" id="msgbtn">전송</button>
+        </div>
+    </div>
+</div>
+<script src="/js/test.js"></script>
 <div th:replace="footer.html :: footer"></div>
 </body>
 </html>
