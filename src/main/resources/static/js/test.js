@@ -70,23 +70,29 @@ function send( jsonmsg ){
     msgwebsocket.send(  JSON.stringify(jsonmsg) );
 }
 
+let index =0;
 // 전송 버튼을 클릭했을때
 $("#sendbtn").click( function(){
-
     //정보모으기
-    let from = id;
-    let to = $("#input2").val();
-    let msg = $("#input3").val();
-    let ysex = yy;
-    let tsex = tt;
-    let inchat = "";
-    let jsonmsg = {
-        "from" : from ,
-        "to" : to ,
-        "msg" : msg ,
-        "ysex" : ysex ,
-        "tsex" : tsex ,
-        "inchat" : inchat
+    if(index==0){
+
+        let from = id;
+        let to = $("#input2").val();
+        let msg = $("#input3").val();
+        let ysex = yy;
+        let tsex = tt;
+        let inchat = "";
+        let jsonmsg = {
+            "from" : from ,
+            "to" : to ,
+            "msg" : msg ,
+            "ysex" : ysex ,
+            "tsex" : tsex ,
+            "inchat" : inchat
+        }
+        i++;
+        send(  jsonmsg  );
+    }else{
+        //inchat msg웹소켓핸들러 에서 값 가져와서 넣어주는 방식
     }
-    send(  jsonmsg  );
 });
