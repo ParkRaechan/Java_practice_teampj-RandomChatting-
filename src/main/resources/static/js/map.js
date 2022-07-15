@@ -3,8 +3,29 @@ let locationX=126.83865508614478; // 기본 X좌표, 수시로 변경
 let locationY=37.315657294383875; // 기본 Y좌표, 수시로 변경
 var positions=[]; // 유저의 좌표들
 //////전역변수 끝//////
+
+//임시로 가장 가까운 유저 확인용
+function getNearUser(){
+    $.ajax({
+        url:"map/getNearUser",
+        data:{"X":locationX,"Y":locationY},
+        success:function(data){
+            console.log(data);
+        }
+    });
+}
+
 function markerAdd(){
-    let gender="남자";
+
+    if(document.getElementById("name").value==""){
+        alert("이름을 입력해주세요");
+        return false; // 이름 빈칸이면 알림창띄우고 리턴
+    }
+    if(document.getElementById("sample5_address").value==""){
+        alert("주소를 입력해주세요");
+        return false; // 주소 빈칸이면 알림창띄우고 리턴
+    }
+    let gender="남자"; // 기본값 남자, radio버튼으로 변경가능
     let name=document.getElementById("name").value;
     for(let i=0; i<2; i++){
     if(document.getElementsByName("gender")[i].checked==true){
@@ -26,7 +47,6 @@ function markerAdd(){
         }
     });
 }
-
 ///////아래는 다음 주소 api////////
 function sample5_execDaumPostcode() {
         new daum.Postcode({

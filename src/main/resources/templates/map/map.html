@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <title>지도</title>
-  <style>
+    <meta charset="UTF-8">
+    <title>지도</title>
+    <style>
 .dot {overflow:hidden;float:left;width:12px;height:12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/mini_circle.png');}
 .dotOverlay {position:relative;bottom:10px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;font-size:12px;padding:5px;background:#fff;}
 .dotOverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
@@ -19,13 +19,13 @@
 <div id="map" style="width:100%;height:350px;"></div>
 <input type="text" id="sample5_address" placeholder="주소">
 <input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
-<input type="radio" value="남자" name="gender" checked="checked" id="r1">남 <input type="radio" value="여자" name="gender" id="r2"> 여<br>
+<input type="radio" value="남자" name="gender" checked="checked">남 <input type="radio" value="여자" name="gender"> 여<br>
 이름 입력 : <input type="text" id="name"><br>
 <button onclick="markerAdd()">마커 추가</button>
+<button onclick="getNearUser()">가까운 유저 찾기</button>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c0c70cdffec83cdf87c92f2c70029adc&libraries=services,clusterer,drawing"></script>
 <script src="/js/map.js" type="text/javascript"></script>
 <div th:replace="footer.html :: footer"></div>
-
 </body>
 </html>
