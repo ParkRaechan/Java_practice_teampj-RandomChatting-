@@ -26,7 +26,19 @@ $(document).ready( function(){
     // 3. 각 메소드 구현  [ open close onMessage ]
     function onOpen2(){  }
     function onClose2(){ }
-    function onMessage2(){ alert("메시지왔다.");  }
+    function onMessage2(msg){
+        let data = msg.data; // 받은 메시지의 내용
+        let qq1 = data.split(",")[0];
+        let opponent = qq1.split(":")[1]; // 보낸사람
+        let qq2 = data.split(",")[2];
+        let qq3 = qq2.split(":")[1]; // 메시지내용
+        let message = qq3.substring(0,qq3.length-1);
+        let html = "";
+        // 1. 본인 보낸 메시지 이면
+
+        html = opponent+":"+ message;
+        alert(html);
+    }
     function send( jsonmsg ){
         // json형식의 문자열 전송
         msgwebsocket.send(  JSON.stringify(jsonmsg) );
