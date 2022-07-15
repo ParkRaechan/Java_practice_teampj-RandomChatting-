@@ -30,4 +30,13 @@ public class MapController {
             response.getWriter().print(mapService.getUsersLocation(x, y, gender, name));
         }catch (Exception e){e.printStackTrace();}
     }
+    @GetMapping("/getNearUser")
+    @ResponseBody
+    public void getNearUser(@RequestParam("X") String x, @RequestParam("Y") String y,
+                            HttpServletResponse response){
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.getWriter().print(mapService.nearUsers(x,y).toString());
+        }catch (Exception e){e.printStackTrace();}
+    }
 }
