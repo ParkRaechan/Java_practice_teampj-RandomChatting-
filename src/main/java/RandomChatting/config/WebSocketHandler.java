@@ -22,9 +22,11 @@ public class WebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         // 경로에서 아이디 추출
         String path = session.getUri().getPath();
-        String mid = path.substring( path.lastIndexOf("/") +1 );
+        String mid = (path.substring( path.lastIndexOf("/") +1 )).split("@")[0];
+        String ysex = (path.substring( path.lastIndexOf("/") +1 )).split("@")[1];
+        String tsex = (path.substring( path.lastIndexOf("/") +1 )).split("@")[2];
         // 세션과 아이디 같이 저장
-        list.put( session , mid );
+        list.put( session , mid);
 
         // 2. 웹소켓과 접속시 리스트에 접속된 세션 담기
 //        list.add( session );
@@ -39,9 +41,13 @@ public class WebSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         JSONObject object = new JSONObject( message.getPayload() ); // Payload() : 메시지내용
         for( WebSocketSession socketSession : list.keySet()  ){    // 모든 키값 호출
+            System.out.println( list.get( socketSession).toString() );
             if( list.get( socketSession).equals( object.get("to")  ) ){
                 socketSession.sendMessage( message );
             }
+//            if( list.get( socketSession).equals( object.get("to")  ) ){
+//                socketSession.sendMessage( message );
+//            }
         }
 
 
