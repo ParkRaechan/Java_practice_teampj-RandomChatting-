@@ -29,5 +29,14 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         list.remove( session );
     }
-
+    @Override
+    protected void handleTextMessage( WebSocketSession session, TextMessage message) throws Exception {
+        JSONObject object = new JSONObject( message.getPayload() ); // Payload() : 메시지내용
+        // 현재 접속된 세션들중에 받는사람(to) 와 같은경우 소켓 메시지 전달
+        for( WebSocketSession socketSession : list.keySet()  ){    // 모든 키값 호출
+            if( list.get( socketSession).equals( object.get("to")  ) ){
+                socketSession.sendMessage( message );
+            }
+        }
+    }
 }
