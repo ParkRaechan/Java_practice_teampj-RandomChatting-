@@ -25,8 +25,8 @@ public class MapService {
         return usersLocations;
     }
 
-    //거리 가까운 순서대로 다른 유저들 정렬해서 반환하는 메소드
-    public ArrayList<User> nearUsers(String x, String y){
+    //거리 가까운 순서대로 다른 유저들 정렬해서 반환하는 메소드. x값, y값, 검색할 범위를 받음
+    public ArrayList<User> nearUsers(String x, String y, int distance){
         ArrayList<User> nearsUsersList=new ArrayList<>();
         double x1=Double.parseDouble(x); // 내 x좌표
         double y1=Double.parseDouble(y); // 내 y좌표
@@ -35,14 +35,16 @@ public class MapService {
          double x2=user.getDouble("x"); // 비교상대 x좌표
          double y2=user.getDouble("y"); // 비교상대 y좌표
          double dis=distance(x1,y1,x2,y2,"kilometer"); // 거리 구하기
-            User userobject=new User();
-            //이름 설정
-            userobject.setUName((String)((JSONObject) usersLocations.get(i)).get("name"));
-            //성별 설정
-            userobject.setUGender((String)((JSONObject) usersLocations.get(i)).get("gender"));
-            //거리 설정
-            userobject.setUDistance(dis);
-            nearsUsersList.add(userobject);
+            if(dis<distance){
+                User userObject=new User();
+                //이름 설정
+                userObject.setUName((String)((JSONObject) usersLocations.get(i)).get("name"));
+                //성별 설정
+                userObject.setUGender((String)((JSONObject) usersLocations.get(i)).get("gender"));
+                //거리 설정
+                userObject.setUDistance(dis);
+                nearsUsersList.add(userObject);
+            }
         }
             //거리순 정렬
         Collections.sort(nearsUsersList, (o1, o2) -> {

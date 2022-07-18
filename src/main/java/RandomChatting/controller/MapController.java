@@ -36,7 +36,7 @@ public class MapController {
                             HttpServletResponse response){
         response.setCharacterEncoding("UTF-8");
         try {
-            response.getWriter().print(mapService.nearUsers(x,y).toString());
+            response.getWriter().print(mapService.nearUsers(x,y,1000).toString());
         }catch (Exception e){e.printStackTrace();}
     }
 }
