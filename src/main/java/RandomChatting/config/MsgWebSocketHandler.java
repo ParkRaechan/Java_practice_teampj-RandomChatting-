@@ -78,7 +78,7 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                             //맞는 사람들끼리 채팅방 만들기 알고리즘에 필요한 값들 받아오기
                             //continue_locationX = (String) list.get(socketSession99).getJSONObject(0).get("locationX");
                             //continue_locationY = (String) list.get(socketSession99).getJSONObject(0).get("locationY");
-                            //continue_yname = (String) list.get(socketSession99).getJSONObject(0).get("yname");
+                            continue_yname = (String) list.get(socketSession99).getJSONObject(0).get("yname");
                             //continue_yage = (String) list.get(socketSession99).getJSONObject(0).get("yage");
                         }
                     }
@@ -93,13 +93,17 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                             String t2 = (String) ((list.get(socketSession)).getJSONObject(0)).get("tsex");
                             //상대방 자신성별
                             String t3 = (String) ((list.get(socketSession)).getJSONObject(0)).get("ysex");
-                            //System.out.println(t1 + "qwe" + t2 + "qwe" + t3);
+                            //상대방 닉네임
+                            String t4 = (String) ((list.get(socketSession)).getJSONObject(0)).get("yname");
+
                             //자기 아이디
                             String y1 = (String) object.get("from");
                             //타겟 성별
                             String y2 = continue_tsex;
                             //자기 성별
                             String y3 = continue_ysex;
+                            //자기 닉네임
+                            String y4 = continue_yname;
 
                             //상대방에 상대방정보+채팅방에 자신 아이디 입력
                             JSONArray jsonArray2 = new JSONArray();
@@ -108,10 +112,11 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                             jsonObject2.put("tsex", t2);
                             jsonObject2.put("ysex", t3);
                             jsonObject2.put("inchat", y1);
+                            jsonObject2.put("yname", t4);
                             jsonArray2.put(jsonObject2);
                             //System.out.println(jsonObject2);
                             list.put(socketSession, jsonArray2);
-                            //System.out.println(list.get(socketSession));
+                            System.out.println(list.get(socketSession));
 
                             //자신정보에 자신정보+채팅방에 상대 아이디 입력
                             JSONArray jsonArray3 = new JSONArray();
@@ -120,10 +125,11 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                             jsonObject3.put("tsex", y2);
                             jsonObject3.put("ysex", y3);
                             jsonObject3.put("inchat", t1);
+                            jsonObject3.put("yname", y4);
                             jsonArray3.put(jsonObject3);
                             //System.out.println(jsonObject3);
                             list.put(session, jsonArray3);
-                            //System.out.println(list.get(session));
+                            System.out.println(list.get(session));
 
                             //메세지 보내기
                             socketSession.sendMessage(message);
@@ -149,6 +155,7 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                         }
                     }else {//성별없을시
                         System.out.println("해당성별 없음");
+                        //위치 검색 범위 1km 증가
                     }
                 }else{
                     //System.out.println("통신");

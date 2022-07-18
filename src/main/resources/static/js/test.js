@@ -54,9 +54,9 @@ function onMessage2(msg){
     //let sexual_2_2 = sexual_2_1.split(":")[1];// 성별만 가져오기
     //let sexual_2 = sexual_2_2.substring(0,sexual_2_2.length-1);//}빼기
 
-    let opponent_1 = data.split(",")[0];//보낸사람 데이터 통째로 가져오기
-    let opponent = opponent_1.split(":")[1]; // 보낸사람만 가져오기
-
+    let opponent_1 = data.split(",")[3];//보낸사람 닉네임 데이터 통째로 가져오기
+    let opponent_2 = opponent_1.split(":")[1]; // 보낸사람 닉네임만 가져오기
+    let opponent = opponent_2.substring(0,opponent_2.length-1);//}빼기
     let message_1 = data.split(",")[1];//메세지내용 데이터 통째로 가져오기
     let message = message_1.split(":")[1]; // 메시지내용만 가져오기
 
@@ -96,10 +96,10 @@ $("#sendbtn").click( function(){
             "msg" : msg ,
             //"ysex" : ysex ,
             //"tsex" : tsex ,
-            "inchat" : inchat
+            "inchat" : inchat ,
             //"locationX" : locationX ,
             //"locationY" : locationY ,
-            //"yname" : yname ,
+            "yname" : yname
             //"yage" : yage
         }
         index++;
@@ -113,10 +113,10 @@ $("#sendbtn").click( function(){
             "msg" : msg ,
             //"ysex" : ysex ,
             //"tsex" : tsex ,
-            "inchat" : inchat
+            "inchat" : inchat ,
             //"locationX" : locationX ,
             //"locationY" : locationY ,
-            //"yname" : yname ,
+            "yname" : yname
             //"yage" : yage
         }
         send(  jsonmsg  );
