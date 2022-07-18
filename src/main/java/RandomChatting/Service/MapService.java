@@ -36,14 +36,14 @@ public class MapService {
          double y2=user.getDouble("y"); // 비교상대 y좌표
          double dis=distance(x1,y1,x2,y2,"kilometer"); // 거리 구하기
             if(dis<distance){
-                User userObject=new User();
+                User userobject=new User();
                 //이름 설정
-                userObject.setUName((String)((JSONObject) usersLocations.get(i)).get("name"));
+                userobject.setUName((String)((JSONObject) usersLocations.get(i)).get("name"));
                 //성별 설정
-                userObject.setUGender((String)((JSONObject) usersLocations.get(i)).get("gender"));
+                userobject.setUGender((String)((JSONObject) usersLocations.get(i)).get("gender"));
                 //거리 설정
-                userObject.setUDistance(dis);
-                nearsUsersList.add(userObject);
+                userobject.setUDistance(dis);
+                nearsUsersList.add(userobject);
             }
         }
             //거리순 정렬
