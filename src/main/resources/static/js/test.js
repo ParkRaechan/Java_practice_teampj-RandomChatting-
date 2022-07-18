@@ -64,6 +64,7 @@ function onMessage2(msg){
 
     //html = opponent+":"+ message+",상대성별-"+sexual_1;
     html = opponent + ":" +message;
+    console.log(data);
     alert(html);
 
 }
