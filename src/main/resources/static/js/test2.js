@@ -1,7 +1,6 @@
 
 //아이디 랜덤 생성
 let rand =  Math.floor( Math.random()*1001 );
-alert(rand);
 
 let mid =  rand;            //랜덤 아이디 배포
 sessionStorage.setItem("mid", mid );//아이디 세션에 저장
