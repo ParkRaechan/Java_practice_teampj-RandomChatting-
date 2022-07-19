@@ -83,7 +83,7 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
             int index2=0;   int index3=0;       //인덱스
 
             int trx = 0;//나이2번올려도 검색 안될때
-
+            int algorizm_index =0;
                 for (WebSocketSession socketSession : list.keySet()) {    // 모든 키값 호출
                     //System.out.println(list.size());
                     if (((String) (object.get("inchat"))).equals("")) {
@@ -95,13 +95,16 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                         if (((String) (((list.get(socketSession)).getJSONObject(0)).get("inchat"))).equals("")) {              //채팅방에 안들어가 있는 놈들중
                             if(!((String) (((list.get(socketSession)).getJSONObject(0)).get("from"))).equals(object.get("from")))
                             {
+
                                 for (int age_range = 1; age_range <= 3; age_range++) {
                                     if (trx == 0) {//나이 2번 올리기
                                         if (age_range == 3) {
-                                            CharSequence alert2 = "현재 찾을 수 있는 사람이 없습니다.";
-                                            TextMessage message_2u = new TextMessage(alert2);
-                                            session.sendMessage(message_2u);
-                                            break;
+                                            //나이 2번 올려도 찾아지지 않을때 해당 경우로 이동(성별상관없이 나이올리며 찾기)
+                                            trx = 1;
+//                                            CharSequence alert2 = "현재 찾을 수 있는 사람이 없습니다.";
+//                                            TextMessage message_2u = new TextMessage(alert2);
+//                                            session.sendMessage(message_2u);
+//                                            break;
                                         }
                                         //지도 검색 코드
                                         //for(){    if(~){~~}   }
@@ -173,18 +176,20 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                                         } else {//나이 범위에 맞는 사람 아닐시
                                             //그냥 진행 -> 나이 2번 올려짐
                                         }
-                                        //나이 2번 올려도 찾아지지 않을때 해당 경우로 이동(성별상관없이 나이올리며 찾기)
-                                        trx = 1;
 
-                                    } else if (trx == 1) {
-                                        if (age_range == 3) {
+
+                                    } else if (trx == 1) {       //나이 2번 올려도 찾아지지 않을 경우(성별상관없이 나이올리며 찾기)
+                                        if(algorizm_index==0){
+                                            age_range = 1;
+                                            algorizm_index = 1;
+                                        }
+                                        if (age_range == 3) {       //나이범위가 3이 되었을때 --- 못 찾았을 경우로 취급
                                             CharSequence alert2 = "현재 찾을 수 있는 사람이 없습니다.";
                                             TextMessage message_2u = new TextMessage(alert2);
                                             session.sendMessage(message_2u);
                                             break;
                                         }
-                                        //나이 2번 올려도 찾아지지 않을 경우(성별상관없이 나이올리며 찾기)
-                                        age_range = 2;
+
                                         //지도 검색 코드
                                         //for(){    if(~){~~}   }
                                         if (index_age <= Integer.parseInt(continue_yage) + age_range && index_age >= Integer.parseInt(continue_yage) - age_range) {          //타겟 나이 있을때
