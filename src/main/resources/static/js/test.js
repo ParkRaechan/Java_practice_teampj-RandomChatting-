@@ -54,18 +54,29 @@ function onMessage2(msg){
     //let sexual_2_2 = sexual_2_1.split(":")[1];// 성별만 가져오기
     //let sexual_2 = sexual_2_2.substring(0,sexual_2_2.length-1);//}빼기
 
-    let opponent_1 = data.split(",")[3];//보낸사람 닉네임 데이터 통째로 가져오기
-    let opponent_2 = opponent_1.split(":")[1]; // 보낸사람 닉네임만 가져오기
-    let opponent = opponent_2.substring(0,opponent_2.length-1);//}빼기
-    let message_1 = data.split(",")[1];//메세지내용 데이터 통째로 가져오기
-    let message = message_1.split(":")[1]; // 메시지내용만 가져오기
 
-    let html = "";
+    ////////////////////////////////////////////////////////////////////
 
-    //html = opponent+":"+ message+",상대성별-"+sexual_1;
-    html = opponent + ":" +message;
-    console.log(data);
-    alert(html);
+    if(data.length!=20){
+        let opponent_1 = data.split(",")[3];//보낸사람 닉네임 데이터 통째로 가져오기
+            let opponent_2 = opponent_1.split(":")[1]; // 보낸사람 닉네임만 가져오기
+            let opponent = opponent_2.substring(0,opponent_2.length-1);//}빼기
+            let message_1 = data.split(",")[1];//메세지내용 데이터 통째로 가져오기
+            let message = message_1.split(":")[1]; // 메시지내용만 가져오기
+
+            let html = "";
+
+            //html = opponent+":"+ message+",상대성별-"+sexual_1;
+            html = opponent + ":" +message;
+
+            ////////////////////////////////////////////////////////////////////
+
+            //console.log(data);
+            alert(html);
+    }else{
+        alert(data);
+    }
+
 
 }
 
@@ -100,10 +111,10 @@ $("#sendbtn").click( function(){
             "inchat" : inchat ,
             //"locationX" : locationX ,
             //"locationY" : locationY ,
-            "yname" : yname
-            //"yage" : yage
+            "yname" : yname ,
+            "yage" : yage
         }
-        index++;
+        //index++;
         send(  jsonmsg  );
     }else{
         let from = id;
@@ -117,8 +128,8 @@ $("#sendbtn").click( function(){
             "inchat" : inchat ,
             //"locationX" : locationX ,
             //"locationY" : locationY ,
-            "yname" : yname
-            //"yage" : yage
+            "yname" : yname ,
+            "yage" : yage
         }
         send(  jsonmsg  );
     }
