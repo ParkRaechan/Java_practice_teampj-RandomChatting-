@@ -55,9 +55,7 @@ function onMessage2(msg){
     //let sexual_2 = sexual_2_2.substring(0,sexual_2_2.length-1);//}빼기
 
 
-    ////////////////////////////////////////////////////////////////////
-
-    if(data.length!=20){
+    if(data.length!=11){
         let opponent_1 = data.split(",")[3];//보낸사람 닉네임 데이터 통째로 가져오기
             let opponent_2 = opponent_1.split(":")[1]; // 보낸사람 닉네임만 가져오기
             let opponent = opponent_2.substring(0,opponent_2.length-1);//}빼기
@@ -65,13 +63,8 @@ function onMessage2(msg){
             let message = message_1.split(":")[1]; // 메시지내용만 가져오기
 
             let html = "";
-
-            //html = opponent+":"+ message+",상대성별-"+sexual_1;
             html = opponent + ":" +message;
 
-            ////////////////////////////////////////////////////////////////////
-
-            //console.log(data);
             alert(html);
     }else{
         alert(data);
@@ -115,22 +108,6 @@ $("#sendbtn").click( function(){
             "yage" : yage
         }
         //index++;
-        send(  jsonmsg  );
-    }else{
-        let from = id;
-        let msg = $("#input3").val();
-        let inchat = "1";
-        let jsonmsg = {
-            "from" : from ,
-            "msg" : msg ,
-            //"ysex" : ysex ,
-            //"tsex" : tsex ,
-            "inchat" : inchat ,
-            //"locationX" : locationX ,
-            //"locationY" : locationY ,
-            "yname" : yname ,
-            "yage" : yage
-        }
         send(  jsonmsg  );
     }
 });
