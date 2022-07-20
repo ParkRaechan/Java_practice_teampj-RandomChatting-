@@ -1,4 +1,4 @@
-package RandomChatting.Service;
+package RandomChatting.service;
 
 import RandomChatting.dto.User;
 import org.json.JSONArray;
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 @Service
 public class MapService {
