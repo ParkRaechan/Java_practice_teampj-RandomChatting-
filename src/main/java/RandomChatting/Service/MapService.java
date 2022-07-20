@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 @Service
 public class MapService {
@@ -23,28 +24,27 @@ public class MapService {
         usersLocations.put(jsonObject);
         return usersLocations;
     }
-    //거리 가까운 순서대로 다른 유저들 정렬해서 반환하는 메소드. x값, y값, 검색할 범위를 받음
-    public ArrayList<User> nearUsers(String x, String y, int distance){
+
+    //거리 가까운 순서대로 다른 유저들 정렬해서 반환하는 메소드
+    public ArrayList<User> nearUsers(String x, String y){
         ArrayList<User> nearsUsersList=new ArrayList<>();
         double x1=Double.parseDouble(x); // 내 x좌표
         double y1=Double.parseDouble(y); // 내 y좌표
         for(int i=0; i<usersLocations.length(); i++){
-            JSONObject user=(JSONObject) usersLocations.get(i);
-            double x2=user.getDouble("x"); // 비교상대 x좌표
-            double y2=user.getDouble("y"); // 비교상대 y좌표
-            double dis=distance(x1,y1,x2,y2,"kilometer"); // 거리 구하기
-            if(dis<distance){
-                User userobject=new User();
-                //이름 설정
-                userobject.setUName((String)((JSONObject) usersLocations.get(i)).get("name"));
-                //성별 설정
-                userobject.setUGender((String)((JSONObject) usersLocations.get(i)).get("gender"));
-                //거리 설정
-                userobject.setUDistance(dis);
-                nearsUsersList.add(userobject);
-            }
+         JSONObject user=(JSONObject) usersLocations.get(i);
+         double x2=user.getDouble("x"); // 비교상대 x좌표
+         double y2=user.getDouble("y"); // 비교상대 y좌표
+         double dis=distance(x1,y1,x2,y2,"kilometer"); // 거리 구하기
+            User userobject=new User();
+            //이름 설정
+            userobject.setUName((String)((JSONObject) usersLocations.get(i)).get("name"));
+            //성별 설정
+            userobject.setUGender((String)((JSONObject) usersLocations.get(i)).get("gender"));
+            //거리 설정
+            userobject.setUDistance(dis);
+            nearsUsersList.add(userobject);
         }
-        //거리순 정렬
+            //거리순 정렬
         Collections.sort(nearsUsersList, (o1, o2) -> {
             double testint1 = o1.getUDistance();
             double testint2 = o2.getUDistance();
