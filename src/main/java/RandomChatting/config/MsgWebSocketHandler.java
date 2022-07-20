@@ -140,8 +140,7 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
 
                                     //메세지 보내기
                                     socketSession.sendMessage(message);
-
-
+                                    break;
                                 }
                             } else {//성별에 해당하는 사람 아닐시
                                 //넘어감 - break 없음
