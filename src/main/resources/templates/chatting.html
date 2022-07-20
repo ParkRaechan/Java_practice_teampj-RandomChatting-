@@ -1,21 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
 </head>
 <body>
 <div th:replace="header.html :: header"></div>
-
-
-<h1>랜덤 만남 채팅</h1>
-당신의 닉네임<div id="id"></div>
-당신의 성별<div id="yy"></div>
-상대의 성별<div id="tt"></div>
-<div>
-  받는 사람<input type="text" id="input2"><br>
-  내용<input type="text" id="input3">
-  <button type="type" id="sendbtn">send</button>
+<div class="container">
+  <div class="chat_area">
+    <div class="row">
+      <h1 class="chat_area_title">채팅창</h1>
+      <div class="col-sm-2 offset-4">
+        <span class="chat_info"><span id="id"></span><span class="chat_text">번으로 접속 중입니다</span></span><br>
+        <span class="chat_text">당신의 성별 : </span><span class="chat_info" id="yy"></span><br>
+        <span class="chat_text">상대의 성별 : </span><span class="chat_info" id="tt"></span><br>
+      </div>
+      <div class="col-sm-2">
+        <div>
+          <span class="chat_info">받는 사람</span><span class="chat_text"><input type="text" id="input2"></span><br>
+          <span class="chat_info">내용</span><span class="chat_text"><input type="text" id="input3"></span>
+          <button class="btn btn-info" type="type" id="sendbtn">send</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <script src="/js/test.js" type="text/javascript"></script>
 <div th:replace="footer.html :: footer"></div>

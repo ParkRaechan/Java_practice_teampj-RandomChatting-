@@ -15,7 +15,6 @@ const showValue1 = (target) => {
     sex_absence1 = true;
     sex_what1 = target.value;
     sessionStorage.setItem("ysex", sex_what1 );
-    alert(target.options[target.selectedIndex].text);
   }
 }
 
@@ -30,7 +29,6 @@ const showValue2 = (target) => {
     sex_absence2 = true;
     sex_what2 = target.value;
     sessionStorage.setItem("tsex", sex_what2 );
-    alert(target.options[target.selectedIndex].text);
   }
 }
 

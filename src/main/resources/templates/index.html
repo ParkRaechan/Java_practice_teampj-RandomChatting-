@@ -6,11 +6,12 @@
 </head>
 <body>
 <div th:replace="header.html :: header"></div>
+<br><br>
 <div class="container">
     <div class="input_form">
         <div class="row">
             <h1 class="input_form_title">랜덤 만남 채팅</h1>
-            <div class="col-sm-6">
+            <div class="col-sm-3 offset-3 selectForm">
                 <div><span><h4 class="small_title">당신의 성별을 선택하세요</h4></span></div>
                 <select class="form-select" id="your_sex" onchange="showValue1(this)">
                     <option selected value="">성별</option>
@@ -18,15 +19,17 @@
                     <option value="여">여자</option>
                 </select>
             </div>
-            <div class="col-sm-6">
-                <div><span><h4 class="small_title">만나고 싶은 상대의 성별을 선택하세요</h4></span></div>
+            <div class="col-sm-3 selectForm">
+                <div><span><h4 class="small_title">상대의 성별을 선택하세요</h4></span></div>
                 <select class="form-select" id="target_sex" onchange="showValue2(this)">
                     <option selected value="">성별</option>
                     <option value="남">남자</option>
                     <option value="여">여자</option>
                 </select>
             </div>
-            <button class="form_control"><a href="/chatting">버튼</a></button>
+        </div>
+        <div class="button_area row">
+            <div class="button col-sm-4 offset-4" onclick="location.href='/chatting'">입장하기</div>
         </div>
     </div>
 </div>
