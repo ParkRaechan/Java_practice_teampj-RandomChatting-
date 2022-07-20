@@ -64,8 +64,8 @@ function onMessage2(msg){
     }
     else{
         let opponent_1 = data.split(",")[3];//보낸사람 닉네임 데이터 통째로 가져오기
-        let opponent_2 = opponent_1.split(":")[1]; // 보낸사람 닉네임만 가져오기
-        let opponent = opponent_2.substring(0,opponent_2.length-1);//}빼기
+        let opponent = opponent_1.split(":")[1]; // 보낸사람 닉네임만 가져오기
+        //let opponent = opponent_2.substring(0,opponent_2.length-1);//}빼기
         let message_1 = data.split(",")[1];//메세지내용 데이터 통째로 가져오기
         let message = message_1.split(":")[1]; // 메시지내용만 가져오기
 
@@ -73,6 +73,7 @@ function onMessage2(msg){
         html = opponent + ":" +message;
 
         alert(html);
+        //alert(data);
     }
 
 

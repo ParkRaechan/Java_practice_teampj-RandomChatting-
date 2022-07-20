@@ -229,15 +229,15 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                                         }
 
                                     } //else {
-                                      //  System.out.println("q7");
-                                      //  if (list.size() == 1) {     //상대방이 없고 서버에 혼자 일때
-                                      //      System.out.println("q6");
-                                      //      CharSequence alert2_4 = "..........2";
-                                      //      TextMessage message_2u_4 = new TextMessage(alert2_4);
-                                      //      session.sendMessage(message_2u_4);
-                                      //      age_range_index = 1;
-                                      //      break;
-                                      //  }
+                                    //  System.out.println("q7");
+                                    //  if (list.size() == 1) {     //상대방이 없고 서버에 혼자 일때
+                                    //      System.out.println("q6");
+                                    //      CharSequence alert2_4 = "..........2";
+                                    //      TextMessage message_2u_4 = new TextMessage(alert2_4);
+                                    //      session.sendMessage(message_2u_4);
+                                    //      age_range_index = 1;
+                                    //      break;
+                                    //  }
                                     //}
                                 }
                                 //if(algorizm_index==list.size()){        //break가 안된 상태 == 알고리즘3단계?
@@ -248,10 +248,10 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                             //System.out.println("q4");
                             if(age_range_index == 0){
                                 CharSequence alert2_4 = "찾는 사람이 없습니다";
-                                      TextMessage message_2u_4 = new TextMessage(alert2_4);
-                                      session.sendMessage(message_2u_4);
-                                      age_range_index = 1;
-                                      //break;
+                                TextMessage message_2u_4 = new TextMessage(alert2_4);
+                                session.sendMessage(message_2u_4);
+                                age_range_index = 1;
+                                //break;
                             }
                             ///////////////////////////////////////////////
                             break;
