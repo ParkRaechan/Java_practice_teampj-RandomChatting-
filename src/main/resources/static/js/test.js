@@ -59,6 +59,8 @@ function onMessage2(msg){
         alert(data);
     }else if(data.length==20){
         alert(data);
+    }else if(data.length==16){
+        alert(data);
     }
     else{
         let opponent_1 = data.split(",")[3];//보낸사람 닉네임 데이터 통째로 가져오기

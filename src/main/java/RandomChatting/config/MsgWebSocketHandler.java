@@ -82,7 +82,9 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
             //int index1_count=0;
 
             if(continue_target.equals("")) {
+                int algorizm_index = 0;
                 for (WebSocketSession socketSession : list.keySet()) {    // 모든 키값 호출
+                    algorizm_index++;
                     int index_age = Integer.parseInt((String) (((list.get(socketSession)).getJSONObject(0)).get("yage")));
                     if (index_age <= Integer.parseInt(continue_yage) + age_range && index_age >= Integer.parseInt(continue_yage) - age_range) {          //타겟 나이 있을때
 
@@ -145,18 +147,92 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                             } else {//성별에 해당하는 사람 아닐시
                                 //넘어감 - break 없음
                             }
+                        }else{                  //상대방이 없고 서버에 혼자 일때
+                            if(list.size()==1){
+                                CharSequence alert2_4 = "찾을 수 있는 사람이 없습니다";
+                                TextMessage message_2u_4 = new TextMessage(alert2_4);
+                                session.sendMessage(message_2u_4);
+                                break;
+                            }
                         }
+                    }
+                    if(algorizm_index==list.size()){        //break가 안된 상태 == 성별 없이 나이올려 검색하는 2단계 알고리즘으로 넘어감
+                        ///////////////////////////////////////////////
+                        for (WebSocketSession socketSession999 : list.keySet()) {    // 모든 키값 호출
+                            int index_age_2 = Integer.parseInt((String) (((list.get(socketSession999)).getJSONObject(0)).get("yage")));
+                            if (index_age_2 <= Integer.parseInt(continue_yage) + age_range && index_age_2 >= Integer.parseInt(continue_yage) - age_range) {          //타겟 나이 있을때
 
-                        age_range++;
-                        //System.out.println(age_range);
-                        if (age_range == 3) {                                   //성별 없애는 나이 알고리즘
 
-                            CharSequence alert2 = "..........!";
-                            TextMessage message_2u = new TextMessage(alert2);
-                            session.sendMessage(message_2u);
+                                if (!((String) (((list.get(socketSession999)).getJSONObject(0)).get("from"))).equals(object.get("from"))) {     //자신제외
 
+                                    if (((String) (((list.get(socketSession999)).getJSONObject(0)).get("inchat"))).equals("")) {              //채팅방에 안들어가 있는 놈들중
+
+                                        //상대방 아이디
+                                        String t1_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("from");
+                                        //상대방 타겟성별
+                                        String t2_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("tsex");
+                                        //상대방 자신성별
+                                        String t3_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("ysex");
+                                        //상대방 닉네임
+                                        String t4_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("yname");
+                                        //상대방 나이
+                                        String t5_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("yage");
+
+                                        //자기 아이디
+                                        String y1_2 = (String) object.get("from");
+                                        //타겟 성별
+                                        String y2_2 = continue_tsex;
+                                        //자기 성별
+                                        String y3_2 = continue_ysex;
+                                        //자기 닉네임
+                                        String y4_2 = continue_yname;
+                                        //자기 나이
+                                        String y5_2 = continue_yage;
+
+                                        //상대방에 상대방정보+채팅방에 자신 아이디 입력
+                                        JSONArray jsonArray2_2 = new JSONArray();
+                                        JSONObject jsonObject2_2 = new JSONObject();
+                                        jsonObject2_2.put("from", t1_2);
+                                        jsonObject2_2.put("tsex", t2_2);
+                                        jsonObject2_2.put("ysex", t3_2);
+                                        jsonObject2_2.put("inchat", y1_2);
+                                        jsonObject2_2.put("yname", t4_2);
+                                        jsonObject2_2.put("yage", t5_2);
+                                        jsonArray2_2.put(jsonObject2_2);
+                                        list.put(socketSession999, jsonArray2_2);
+
+                                        //자신정보에 자신정보+채팅방에 상대 아이디 입력
+                                        JSONArray jsonArray3_2 = new JSONArray();
+                                        JSONObject jsonObject3_2 = new JSONObject();
+                                        jsonObject3_2.put("from", y1_2);
+                                        jsonObject3_2.put("tsex", y2_2);
+                                        jsonObject3_2.put("ysex", y3_2);
+                                        jsonObject3_2.put("inchat", t1_2);
+                                        jsonObject3_2.put("yname", y4_2);
+                                        jsonObject3_2.put("yage", y5_2);
+                                        jsonArray3_2.put(jsonObject3_2);
+                                        list.put(session, jsonArray3_2);
+
+                                        //메세지 보내기
+                                        socketSession999.sendMessage(message);
+                                        break;
+                                    }
+
+                                }else{                  //상대방이 없고 서버에 혼자 일때
+                                    if(list.size()==1){
+                                        CharSequence alert2_4 = "..........2";
+                                        TextMessage message_2u_4 = new TextMessage(alert2_4);
+                                        session.sendMessage(message_2u_4);
+                                        break;
+                                    }
+                                }
+                            }
+                            //if(algorizm_index==list.size()){        //break가 안된 상태 == 알고리즘3단계?
+
+                            //}
                         }
-
+                        ///////////////////////////////////////////////
+                        break;
                     }
                 }
             }else{// 자신이 채팅방에 들어가있다면
@@ -168,7 +244,7 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                     }else{
                         index99++;
                     }
-                    if(index99==list.size()){
+                    if(index99==list.size()){       //상대방이 나갔을때
                         CharSequence alert2 = "상대방이 나갔습니다.";
                         TextMessage message_2u = new TextMessage(alert2);
                         session.sendMessage(message_2u);
