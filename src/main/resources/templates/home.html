@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="header.html :: header"></div>
+<!-- Single Hero Slide -->
+<div class="single-hero-slide d-flex align-items-center justify-content-center">
+  <!-- Slide Img -->
+  <div class="slide-img bg-img" style="background-image: url(img/bg-img/neon.png);"></div>
+  <!-- Slide Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="hero-slides-content text-center">
+          <h6 data-animation="fadeInUp" data-delay="100ms">놀사람 구함</h6>
+          <h2 data-animation="fadeInUp" data-delay="300ms">너만오면 출발 <span>너만오면 출발</span></h2>
+          <a data-animation="fadeInUp" data-delay="500ms" href="/index" class="btn oneMusic-btn mt-50">시작하기 <i class="fa fa-angle-double-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Single Hero Slide -->
+<!--<div class="single-hero-slide d-flex align-items-center justify-content-center">
+  &lt;!&ndash; Slide Img &ndash;&gt;
+  <div class="slide-img bg-img" style="background-image: url(img/bg-img/bg-2.jpg);"></div>
+  &lt;!&ndash; Slide Content &ndash;&gt;
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="hero-slides-content text-center">
+          <h6 data-animation="fadeInUp" data-delay="100ms">놀사람 구함</h6>
+          <h2 data-animation="fadeInUp" data-delay="300ms">너만오면 출발 <span>너만오면 출발</span></h2>
+          <a data-animation="fadeInUp" data-delay="500ms" href="/index" class="btn oneMusic-btn mt-50">시작하기 <i class="fa fa-angle-double-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>-->
+<div th:replace="footer.html :: footer"></div>
+</body>
+</html>

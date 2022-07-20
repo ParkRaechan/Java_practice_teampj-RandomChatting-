@@ -63,6 +63,7 @@ function confirm(){
             check = false;
         }
     }
+    alert(check);
     if(check){
         sessionStorage.setItem("mid", mid );//아이디 세션에 저장
         sessionStorage.setItem("yname", yname_what );//닉네임 세션에 저장

@@ -1,7 +1,5 @@
 package RandomChatting.controller;
 
-import RandomChatting.Service.MapService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/map")
 public class MapController {
-    @Autowired
-    MapService mapService;
+    //@Autowired
+    //MapService mapService;
 
     @GetMapping("")
     public String map(){return "map/map";}
@@ -27,7 +25,7 @@ public class MapController {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         try {
-            response.getWriter().print(mapService.getUsersLocation(x, y, gender, name));
+            //response.getWriter().print(mapService.getUsersLocation(x, y, gender, name));
         }catch (Exception e){e.printStackTrace();}
     }
     @GetMapping("/getNearUser")
@@ -36,7 +34,7 @@ public class MapController {
                             HttpServletResponse response){
         response.setCharacterEncoding("UTF-8");
         try {
-            response.getWriter().print(mapService.nearUsers(x,y,999).toString());
+            //response.getWriter().print(mapService.nearUsers(x,y,999).toString());
         }catch (Exception e){e.printStackTrace();}
     }
 }
