@@ -18,6 +18,7 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
     // 접속된 세션의 리스트 [ 세션 , 회원ID ]
     private Map< WebSocketSession , JSONArray> list = new HashMap<>();
     MapService mapService = new MapService();
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         // 경로에서 아이디 추출
@@ -52,7 +53,7 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                     jsonObject.put("inchat","");
                     jsonArray.put(jsonObject);
                     list.put( session , jsonArray );
-                    System.out.println(list.get( socketSession));
+                    //System.out.println(list.get( socketSession));
                 }
             }
         }else{
@@ -78,517 +79,77 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                 }
             }
 
-            //int index2=0;   int index3=0;
-            int age_range=1;                //나이 범위
-            int age_range_index = 0;        //break되었을시 1로
-            //int index1_count=0;
+            Map< WebSocketSession , JSONArray> list1 = new HashMap<>();     //나이맞는애들모음
+            Map< WebSocketSession , JSONArray> list2 = new HashMap<>();     //나이틀린애들모음
+            int theEnd = 0;
 
-            if(continue_target.equals("")) {
-                int algorizm_index = 0;     //나이 알고리즘 얼마나 작동했는지
-                int alone_index = 0;
-                //for(age_range=1;age_range<=2;age_range++) {
-                    for (WebSocketSession socketSession : list.keySet()) {    // 모든 키값 호출
-                        algorizm_index++;
-                        String qq_index1 = ((String) (((list.get(socketSession)).getJSONObject(0)).get("locationX")));
-                        String qq_index2 = ((String) (((list.get(socketSession)).getJSONObject(0)).get("locationY")));
-                        int index_age = Integer.parseInt((String) (((list.get(socketSession)).getJSONObject(0)).get("yage")));
-                        if (index_age <= Integer.parseInt(continue_yage) + age_range && index_age >= Integer.parseInt(continue_yage) - age_range) {          //타겟 나이 있을때
+            if(continue_target.equals("")) {                                //내 자신이 채팅방에 들어가 있지 않은 경우
+                for (WebSocketSession socketSession : list.keySet()) {    // 모든 키값 호출
+                    if (!((String) (((list.get(socketSession)).getJSONObject(0)).get("from"))).equals(object.get("from"))) {    //자신제외  대상 검색
+                        if (((String) (((list.get(socketSession)).getJSONObject(0)).get("inchat"))).equals("")) {               //채팅방 있는 놈들 제외 대상 검색
+                            int index_age = Integer.parseInt((String) (((list.get(socketSession)).getJSONObject(0)).get("yage")));  //상대 나이 가져오기
 
+                            if (index_age <= Integer.parseInt(continue_yage) + 1 && index_age >= Integer.parseInt(continue_yage) - 1) { //나이맞을시
 
-                            if (!((String) (((list.get(socketSession)).getJSONObject(0)).get("from"))).equals(object.get("from"))) {     //자신제외
-                                if (((String) (((list.get(socketSession)).getJSONObject(0)).get("ysex"))).equals(continue_tsex)) {   //타겟성별이 있을때
+                                //상대방 아이디
+                                String t1 = (String) ((list.get(socketSession)).getJSONObject(0)).get("from");
+                                //상대방 타겟성별
+                                String t2 = (String) ((list.get(socketSession)).getJSONObject(0)).get("tsex");
+                                //상대방 자신성별
+                                String t3 = (String) ((list.get(socketSession)).getJSONObject(0)).get("ysex");
+                                //상대방 닉네임
+                                String t4 = (String) ((list.get(socketSession)).getJSONObject(0)).get("yname");
+                                //상대방 나이
+                                String t5 = (String) ((list.get(socketSession)).getJSONObject(0)).get("yage");
+                                String t6 = ((String) (((list.get(socketSession)).getJSONObject(0)).get("locationX")));
+                                String t7 = ((String) (((list.get(socketSession)).getJSONObject(0)).get("locationY")));
 
-                                    if (((String) (((list.get(socketSession)).getJSONObject(0)).get("inchat"))).equals("")) {              //채팅방에 안들어가 있는 놈들중
-                                        double qq1 = Double.parseDouble(continue_locationX);
-                                        double qq2 = Double.parseDouble(continue_locationY);
-                                        double qq3 = Double.parseDouble(((String) (((list.get(socketSession)).getJSONObject(0)).get("locationX"))));
-                                        double qq4 = Double.parseDouble(((String) (((list.get(socketSession)).getJSONObject(0)).get("locationY"))));
-                                        double qqq = mapService.distance(qq1,qq2,qq3,qq4);
-                                        System.out.println("q12");System.out.println(qqq);
-                                        int q_index=1;
-                                        if(qqq<q_index) {
-                                            //상대방 아이디
-                                            String t1 = (String) ((list.get(socketSession)).getJSONObject(0)).get("from");
-                                            //상대방 타겟성별
-                                            String t2 = (String) ((list.get(socketSession)).getJSONObject(0)).get("tsex");
-                                            //상대방 자신성별
-                                            String t3 = (String) ((list.get(socketSession)).getJSONObject(0)).get("ysex");
-                                            //상대방 닉네임
-                                            String t4 = (String) ((list.get(socketSession)).getJSONObject(0)).get("yname");
-                                            //상대방 나이
-                                            String t5 = (String) ((list.get(socketSession)).getJSONObject(0)).get("yage");
-                                            String t6 = qq_index1;
-                                            String t7 = qq_index2;
+                                //나이맞는대상모음
+                                JSONArray jsonArray2 = new JSONArray();
+                                JSONObject jsonObject2 = new JSONObject();
+                                jsonObject2.put("from", t1);
+                                jsonObject2.put("tsex", t2);
+                                jsonObject2.put("ysex", t3);
+                                jsonObject2.put("inchat", "");
+                                jsonObject2.put("yname", t4);
+                                jsonObject2.put("yage", t5);
+                                jsonObject2.put("locationX", t6);
+                                jsonObject2.put("locationY", t7);
+                                jsonArray2.put(jsonObject2);
+                                list1.put(socketSession, jsonArray2);
 
-                                            //자기 아이디
-                                            String y1 = (String) object.get("from");
-                                            //타겟 성별
-                                            String y2 = continue_tsex;
-                                            //자기 성별
-                                            String y3 = continue_ysex;
-                                            //자기 닉네임
-                                            String y4 = continue_yname;
-                                            //자기 나이
-                                            String y5 = continue_yage;
-                                            String y6 = continue_locationX;
-                                            String y7 = continue_locationY;
+                            }else{                                                                                                      //나이틀릴시
+                                //상대방 아이디
+                                String t1 = (String) ((list.get(socketSession)).getJSONObject(0)).get("from");
+                                //상대방 타겟성별
+                                String t2 = (String) ((list.get(socketSession)).getJSONObject(0)).get("tsex");
+                                //상대방 자신성별
+                                String t3 = (String) ((list.get(socketSession)).getJSONObject(0)).get("ysex");
+                                //상대방 닉네임
+                                String t4 = (String) ((list.get(socketSession)).getJSONObject(0)).get("yname");
+                                //상대방 나이
+                                String t5 = (String) ((list.get(socketSession)).getJSONObject(0)).get("yage");
+                                String t6 = ((String) (((list.get(socketSession)).getJSONObject(0)).get("locationX")));
+                                String t7 = ((String) (((list.get(socketSession)).getJSONObject(0)).get("locationY")));
 
-                                            //상대방에 상대방정보+채팅방에 자신 아이디 입력
-                                            JSONArray jsonArray2 = new JSONArray();
-                                            JSONObject jsonObject2 = new JSONObject();
-                                            jsonObject2.put("from", t1);
-                                            jsonObject2.put("tsex", t2);
-                                            jsonObject2.put("ysex", t3);
-                                            jsonObject2.put("inchat", y1);
-                                            jsonObject2.put("yname", t4);
-                                            jsonObject2.put("yage", t5);
-                                            jsonObject2.put("locationX", t6);
-                                            jsonObject2.put("locationY", t7);
-                                            jsonArray2.put(jsonObject2);
-                                            list.put(socketSession, jsonArray2);
-
-                                            //자신정보에 자신정보+채팅방에 상대 아이디 입력
-                                            JSONArray jsonArray3 = new JSONArray();
-                                            JSONObject jsonObject3 = new JSONObject();
-                                            jsonObject3.put("from", y1);
-                                            jsonObject3.put("tsex", y2);
-                                            jsonObject3.put("ysex", y3);
-                                            jsonObject3.put("inchat", t1);
-                                            jsonObject3.put("yname", y4);
-                                            jsonObject3.put("yage", y5);
-                                            jsonObject3.put("locationX", y6);
-                                            jsonObject3.put("locationY", y7);
-                                            jsonArray3.put(jsonObject3);
-                                            list.put(session, jsonArray3);
-
-                                            //메세지 보내기
-                                            socketSession.sendMessage(message);
-                                            age_range_index = 1;
-                                            break;
-                                        }else{
-                                            q_index++;
-                                            if(qqq<q_index) {
-                                                //상대방 아이디
-                                                String t1 = (String) ((list.get(socketSession)).getJSONObject(0)).get("from");
-                                                //상대방 타겟성별
-                                                String t2 = (String) ((list.get(socketSession)).getJSONObject(0)).get("tsex");
-                                                //상대방 자신성별
-                                                String t3 = (String) ((list.get(socketSession)).getJSONObject(0)).get("ysex");
-                                                //상대방 닉네임
-                                                String t4 = (String) ((list.get(socketSession)).getJSONObject(0)).get("yname");
-                                                //상대방 나이
-                                                String t5 = (String) ((list.get(socketSession)).getJSONObject(0)).get("yage");
-                                                String t6 = qq_index1;
-                                                String t7 = qq_index2;
-
-                                                //자기 아이디
-                                                String y1 = (String) object.get("from");
-                                                //타겟 성별
-                                                String y2 = continue_tsex;
-                                                //자기 성별
-                                                String y3 = continue_ysex;
-                                                //자기 닉네임
-                                                String y4 = continue_yname;
-                                                //자기 나이
-                                                String y5 = continue_yage;
-                                                String y6 = continue_locationX;
-                                                String y7 = continue_locationY;
-
-                                                //상대방에 상대방정보+채팅방에 자신 아이디 입력
-                                                JSONArray jsonArray2 = new JSONArray();
-                                                JSONObject jsonObject2 = new JSONObject();
-                                                jsonObject2.put("from", t1);
-                                                jsonObject2.put("tsex", t2);
-                                                jsonObject2.put("ysex", t3);
-                                                jsonObject2.put("inchat", y1);
-                                                jsonObject2.put("yname", t4);
-                                                jsonObject2.put("yage", t5);
-                                                jsonObject2.put("locationX", t6);
-                                                jsonObject2.put("locationY", t7);
-                                                jsonArray2.put(jsonObject2);
-                                                list.put(socketSession, jsonArray2);
-
-                                                //자신정보에 자신정보+채팅방에 상대 아이디 입력
-                                                JSONArray jsonArray3 = new JSONArray();
-                                                JSONObject jsonObject3 = new JSONObject();
-                                                jsonObject3.put("from", y1);
-                                                jsonObject3.put("tsex", y2);
-                                                jsonObject3.put("ysex", y3);
-                                                jsonObject3.put("inchat", t1);
-                                                jsonObject3.put("yname", y4);
-                                                jsonObject3.put("yage", y5);
-                                                jsonObject3.put("locationX", y6);
-                                                jsonObject3.put("locationY", y7);
-                                                jsonArray3.put(jsonObject3);
-                                                list.put(session, jsonArray3);
-
-                                                //메세지 보내기
-                                                socketSession.sendMessage(message);
-                                                age_range_index = 1;
-                                                break;
-                                            }else{
-                                                if(age_range_index == 0){
-                                                    CharSequence alert2_4 = "찾는 사람이 없습니다";
-                                                    TextMessage message_2u_4 = new TextMessage(alert2_4);
-                                                    session.sendMessage(message_2u_4);
-                                                    age_range_index = 1;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else {//성별에 해당하는 사람 아닐시
-                                    //넘어감 - break 없음
-                                }
-                            } else {                  //상대방이 없고 서버에 혼자 일때
-                                if(alone_index==0) {
-                                    alone_index = 1;
-                                    if (list.size() == 1) {
-                                        CharSequence alert2_4 = "찾을 수 있는 사람이 없습니다";
-                                        TextMessage message_2u_4 = new TextMessage(alert2_4);
-                                        session.sendMessage(message_2u_4);
-                                        age_range_index = 1;
-                                        break;
-                                    }
-                                }
+                                //나이맞는대상모음
+                                JSONArray jsonArray2 = new JSONArray();
+                                JSONObject jsonObject2 = new JSONObject();
+                                jsonObject2.put("from", t1);
+                                jsonObject2.put("tsex", t2);
+                                jsonObject2.put("ysex", t3);
+                                jsonObject2.put("inchat", "");
+                                jsonObject2.put("yname", t4);
+                                jsonObject2.put("yage", t5);
+                                jsonObject2.put("locationX", t6);
+                                jsonObject2.put("locationY", t7);
+                                jsonArray2.put(jsonObject2);
+                                list2.put(socketSession, jsonArray2);
+                                //System.out.println(list2);
                             }
-                        }else{
-                            age_range++;
-                            if (!((String) (((list.get(socketSession)).getJSONObject(0)).get("from"))).equals(object.get("from"))) {     //자신제외
-                                if (((String) (((list.get(socketSession)).getJSONObject(0)).get("ysex"))).equals(continue_tsex)) {   //타겟성별이 있을때
-
-                                    if (((String) (((list.get(socketSession)).getJSONObject(0)).get("inchat"))).equals("")) {              //채팅방에 안들어가 있는 놈들중
-                                        double qq1 = Double.parseDouble(continue_locationX);
-                                        double qq2 = Double.parseDouble(continue_locationY);
-                                        double qq3 = Double.parseDouble(((String) (((list.get(socketSession)).getJSONObject(0)).get("locationX"))));
-                                        double qq4 = Double.parseDouble(((String) (((list.get(socketSession)).getJSONObject(0)).get("locationY"))));
-                                        double qqq = mapService.distance(qq1,qq2,qq3,qq4);
-                                        System.out.println("q12");System.out.println(qqq);
-                                        int q_index=1;
-                                        if(qqq<q_index) {
-                                            //상대방 아이디
-                                            String t1 = (String) ((list.get(socketSession)).getJSONObject(0)).get("from");
-                                            //상대방 타겟성별
-                                            String t2 = (String) ((list.get(socketSession)).getJSONObject(0)).get("tsex");
-                                            //상대방 자신성별
-                                            String t3 = (String) ((list.get(socketSession)).getJSONObject(0)).get("ysex");
-                                            //상대방 닉네임
-                                            String t4 = (String) ((list.get(socketSession)).getJSONObject(0)).get("yname");
-                                            //상대방 나이
-                                            String t5 = (String) ((list.get(socketSession)).getJSONObject(0)).get("yage");
-                                            String t6 = qq_index1;
-                                            String t7 = qq_index2;
-
-                                            //자기 아이디
-                                            String y1 = (String) object.get("from");
-                                            //타겟 성별
-                                            String y2 = continue_tsex;
-                                            //자기 성별
-                                            String y3 = continue_ysex;
-                                            //자기 닉네임
-                                            String y4 = continue_yname;
-                                            //자기 나이
-                                            String y5 = continue_yage;
-                                            String y6 = continue_locationX;
-                                            String y7 = continue_locationY;
-
-                                            //상대방에 상대방정보+채팅방에 자신 아이디 입력
-                                            JSONArray jsonArray2 = new JSONArray();
-                                            JSONObject jsonObject2 = new JSONObject();
-                                            jsonObject2.put("from", t1);
-                                            jsonObject2.put("tsex", t2);
-                                            jsonObject2.put("ysex", t3);
-                                            jsonObject2.put("inchat", y1);
-                                            jsonObject2.put("yname", t4);
-                                            jsonObject2.put("yage", t5);
-                                            jsonObject2.put("locationX", t6);
-                                            jsonObject2.put("locationY", t7);
-                                            jsonArray2.put(jsonObject2);
-                                            list.put(socketSession, jsonArray2);
-
-                                            //자신정보에 자신정보+채팅방에 상대 아이디 입력
-                                            JSONArray jsonArray3 = new JSONArray();
-                                            JSONObject jsonObject3 = new JSONObject();
-                                            jsonObject3.put("from", y1);
-                                            jsonObject3.put("tsex", y2);
-                                            jsonObject3.put("ysex", y3);
-                                            jsonObject3.put("inchat", t1);
-                                            jsonObject3.put("yname", y4);
-                                            jsonObject3.put("yage", y5);
-                                            jsonObject3.put("locationX", y6);
-                                            jsonObject3.put("locationY", y7);
-                                            jsonArray3.put(jsonObject3);
-                                            list.put(session, jsonArray3);
-
-                                            //메세지 보내기
-                                            socketSession.sendMessage(message);
-                                            age_range_index = 1;
-                                            break;
-                                        }else{
-                                            q_index++;
-                                            if(qqq<q_index) {
-                                                //상대방 아이디
-                                                String t1 = (String) ((list.get(socketSession)).getJSONObject(0)).get("from");
-                                                //상대방 타겟성별
-                                                String t2 = (String) ((list.get(socketSession)).getJSONObject(0)).get("tsex");
-                                                //상대방 자신성별
-                                                String t3 = (String) ((list.get(socketSession)).getJSONObject(0)).get("ysex");
-                                                //상대방 닉네임
-                                                String t4 = (String) ((list.get(socketSession)).getJSONObject(0)).get("yname");
-                                                //상대방 나이
-                                                String t5 = (String) ((list.get(socketSession)).getJSONObject(0)).get("yage");
-                                                String t6 = qq_index1;
-                                                String t7 = qq_index2;
-
-                                                //자기 아이디
-                                                String y1 = (String) object.get("from");
-                                                //타겟 성별
-                                                String y2 = continue_tsex;
-                                                //자기 성별
-                                                String y3 = continue_ysex;
-                                                //자기 닉네임
-                                                String y4 = continue_yname;
-                                                //자기 나이
-                                                String y5 = continue_yage;
-                                                String y6 = continue_locationX;
-                                                String y7 = continue_locationY;
-
-                                                //상대방에 상대방정보+채팅방에 자신 아이디 입력
-                                                JSONArray jsonArray2 = new JSONArray();
-                                                JSONObject jsonObject2 = new JSONObject();
-                                                jsonObject2.put("from", t1);
-                                                jsonObject2.put("tsex", t2);
-                                                jsonObject2.put("ysex", t3);
-                                                jsonObject2.put("inchat", y1);
-                                                jsonObject2.put("yname", t4);
-                                                jsonObject2.put("yage", t5);
-                                                jsonObject2.put("locationX", t6);
-                                                jsonObject2.put("locationY", t7);
-                                                jsonArray2.put(jsonObject2);
-                                                list.put(socketSession, jsonArray2);
-
-                                                //자신정보에 자신정보+채팅방에 상대 아이디 입력
-                                                JSONArray jsonArray3 = new JSONArray();
-                                                JSONObject jsonObject3 = new JSONObject();
-                                                jsonObject3.put("from", y1);
-                                                jsonObject3.put("tsex", y2);
-                                                jsonObject3.put("ysex", y3);
-                                                jsonObject3.put("inchat", t1);
-                                                jsonObject3.put("yname", y4);
-                                                jsonObject3.put("yage", y5);
-                                                jsonObject3.put("locationX", y6);
-                                                jsonObject3.put("locationY", y7);
-                                                jsonArray3.put(jsonObject3);
-                                                list.put(session, jsonArray3);
-
-                                                //메세지 보내기
-                                                socketSession.sendMessage(message);
-                                                age_range_index = 1;
-                                                break;
-                                            }else{
-                                                if(age_range_index == 0){
-                                                    CharSequence alert2_4 = "찾는 사람이 없습니다";
-                                                    TextMessage message_2u_4 = new TextMessage(alert2_4);
-                                                    session.sendMessage(message_2u_4);
-                                                    age_range_index = 1;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else {//성별에 해당하는 사람 아닐시
-                                    //넘어감 - break 없음
-                                }
-                            } else {                  //상대방이 없고 서버에 혼자 일때
-                                if(alone_index==0) {
-                                    alone_index = 1;
-                                    if (list.size() == 1) {
-                                        CharSequence alert2_4 = "찾을 수 있는 사람이 없습니다";
-                                        TextMessage message_2u_4 = new TextMessage(alert2_4);
-                                        session.sendMessage(message_2u_4);
-                                        age_range_index = 1;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        if (algorizm_index == list.size()) {        //break가 안된 상태 == 성별 없이 나이올려 검색하는 2단계 알고리즘으로 넘어감
-                            ///////////////////////////////////////////////
-                            for (WebSocketSession socketSession999 : list.keySet()) {    // 모든 키값 호출
-                                int index_age_2 = Integer.parseInt((String) (((list.get(socketSession999)).getJSONObject(0)).get("yage")));
-                                age_range=1;
-                                if (index_age_2 <= Integer.parseInt(continue_yage) + age_range && index_age_2 >= Integer.parseInt(continue_yage) - age_range) {          //타겟 나이 있을때
-
-
-                                    if (!((String) (((list.get(socketSession999)).getJSONObject(0)).get("from"))).equals(object.get("from"))) {     //자신제외
-
-                                        if (((String) (((list.get(socketSession999)).getJSONObject(0)).get("inchat"))).equals("")) {              //채팅방에 안들어가 있는 놈들중
-
-                                            //상대방 아이디
-                                            String t1_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("from");
-                                            //상대방 타겟성별
-                                            String t2_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("tsex");
-                                            //상대방 자신성별
-                                            String t3_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("ysex");
-                                            //상대방 닉네임
-                                            String t4_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("yname");
-                                            //상대방 나이
-                                            String t5_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("yage");
-                                            String t6 = qq_index1;
-                                            String t7 = qq_index2;
-
-                                            //자기 아이디
-                                            String y1_2 = (String) object.get("from");
-                                            //타겟 성별
-                                            String y2_2 = continue_tsex;
-                                            //자기 성별
-                                            String y3_2 = continue_ysex;
-                                            //자기 닉네임
-                                            String y4_2 = continue_yname;
-                                            //자기 나이
-                                            String y5_2 = continue_yage;
-                                            String y6 = continue_locationX;
-                                            String y7 = continue_locationY;
-                                            //상대방에 상대방정보+채팅방에 자신 아이디 입력
-                                            JSONArray jsonArray2_2 = new JSONArray();
-                                            JSONObject jsonObject2_2 = new JSONObject();
-                                            jsonObject2_2.put("from", t1_2);
-                                            jsonObject2_2.put("tsex", t2_2);
-                                            jsonObject2_2.put("ysex", t3_2);
-                                            jsonObject2_2.put("inchat", y1_2);
-                                            jsonObject2_2.put("yname", t4_2);
-                                            jsonObject2_2.put("yage", t5_2);
-                                            jsonObject2_2.put("locationX", t6);
-                                            jsonObject2_2.put("locationY", t7);
-                                            jsonArray2_2.put(jsonObject2_2);
-                                            list.put(socketSession999, jsonArray2_2);
-
-                                            //자신정보에 자신정보+채팅방에 상대 아이디 입력
-                                            JSONArray jsonArray3_2 = new JSONArray();
-                                            JSONObject jsonObject3_2 = new JSONObject();
-                                            jsonObject3_2.put("from", y1_2);
-                                            jsonObject3_2.put("tsex", y2_2);
-                                            jsonObject3_2.put("ysex", y3_2);
-                                            jsonObject3_2.put("inchat", t1_2);
-                                            jsonObject3_2.put("yname", y4_2);
-                                            jsonObject3_2.put("yage", y5_2);
-                                            jsonObject3_2.put("locationX", y6);
-                                            jsonObject3_2.put("locationY", y7);
-                                            jsonArray3_2.put(jsonObject3_2);
-                                            list.put(session, jsonArray3_2);
-
-                                            //메세지 보내기
-                                            socketSession999.sendMessage(message);
-                                            age_range_index = 1;
-                                            break;
-                                        }
-
-                                    }
-
-                                }else{
-                                    age_range++;
-                                    if (index_age_2 <= Integer.parseInt(continue_yage) + age_range && index_age_2 >= Integer.parseInt(continue_yage) - age_range) {          //타겟 나이 있을때
-
-
-                                        if (!((String) (((list.get(socketSession999)).getJSONObject(0)).get("from"))).equals(object.get("from"))) {     //자신제외
-
-                                            if (((String) (((list.get(socketSession999)).getJSONObject(0)).get("inchat"))).equals("")) {              //채팅방에 안들어가 있는 놈들중
-
-                                                //상대방 아이디
-                                                String t1_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("from");
-                                                //상대방 타겟성별
-                                                String t2_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("tsex");
-                                                //상대방 자신성별
-                                                String t3_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("ysex");
-                                                //상대방 닉네임
-                                                String t4_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("yname");
-                                                //상대방 나이
-                                                String t5_2 = (String) ((list.get(socketSession999)).getJSONObject(0)).get("yage");
-                                                String t6 = qq_index1;
-                                                String t7 = qq_index2;
-
-                                                //자기 아이디
-                                                String y1_2 = (String) object.get("from");
-                                                //타겟 성별
-                                                String y2_2 = continue_tsex;
-                                                //자기 성별
-                                                String y3_2 = continue_ysex;
-                                                //자기 닉네임
-                                                String y4_2 = continue_yname;
-                                                //자기 나이
-                                                String y5_2 = continue_yage;
-                                                String y6 = continue_locationX;
-                                                String y7 = continue_locationY;
-                                                //상대방에 상대방정보+채팅방에 자신 아이디 입력
-                                                JSONArray jsonArray2_2 = new JSONArray();
-                                                JSONObject jsonObject2_2 = new JSONObject();
-                                                jsonObject2_2.put("from", t1_2);
-                                                jsonObject2_2.put("tsex", t2_2);
-                                                jsonObject2_2.put("ysex", t3_2);
-                                                jsonObject2_2.put("inchat", y1_2);
-                                                jsonObject2_2.put("yname", t4_2);
-                                                jsonObject2_2.put("yage", t5_2);
-                                                jsonObject2_2.put("locationX", t6);
-                                                jsonObject2_2.put("locationY", t7);
-                                                jsonArray2_2.put(jsonObject2_2);
-                                                list.put(socketSession999, jsonArray2_2);
-
-                                                //자신정보에 자신정보+채팅방에 상대 아이디 입력
-                                                JSONArray jsonArray3_2 = new JSONArray();
-                                                JSONObject jsonObject3_2 = new JSONObject();
-                                                jsonObject3_2.put("from", y1_2);
-                                                jsonObject3_2.put("tsex", y2_2);
-                                                jsonObject3_2.put("ysex", y3_2);
-                                                jsonObject3_2.put("inchat", t1_2);
-                                                jsonObject3_2.put("yname", y4_2);
-                                                jsonObject3_2.put("yage", y5_2);
-                                                jsonObject3_2.put("locationX", y6);
-                                                jsonObject3_2.put("locationY", y7);
-                                                jsonArray3_2.put(jsonObject3_2);
-                                                list.put(session, jsonArray3_2);
-
-                                                //메세지 보내기
-                                                socketSession999.sendMessage(message);
-                                                age_range_index = 1;
-                                                break;
-                                            }
-
-                                        } //else {
-                                        //  System.out.println("q7");
-                                        //  if (list.size() == 1) {     //상대방이 없고 서버에 혼자 일때
-                                        //      System.out.println("q6");
-                                        //      CharSequence alert2_4 = "..........2";
-                                        //      TextMessage message_2u_4 = new TextMessage(alert2_4);
-                                        //      session.sendMessage(message_2u_4);
-                                        //      age_range_index = 1;
-                                        //      break;
-                                        //  }
-                                        //}
-                                    }
-                                }
-                            }
-                            //System.out.println("q4");
-                            if(age_range_index == 0){
-                                CharSequence alert2_4 = "찾는 사람이 없습니다";
-                                TextMessage message_2u_4 = new TextMessage(alert2_4);
-                                session.sendMessage(message_2u_4);
-                                age_range_index = 1;
-                                //break;
-                            }
-                            ///////////////////////////////////////////////
-                            break;
-                        }
-                        if(age_range_index == 1){
-                            //System.out.println("q1");
-                            break;
                         }
                     }
-//                    if( age_range == 2){
-//                        //System.out.println("q2");
-//                        break;
-//                    }
-                    //System.out.println("q3");
-                //}
+                }
             }else{// 자신이 채팅방에 들어가있다면
                 int index99 = 0;
                 for(WebSocketSession socketSession99 : list.keySet()) {
@@ -605,6 +166,759 @@ public class MsgWebSocketHandler extends TextWebSocketHandler {
                         break;
                     }
                 }
+                theEnd =1;
+            }
+
+            Map< WebSocketSession , JSONArray> list3 = new HashMap<>();     //나이맞는, 성별맞는 애들모음
+            Map< WebSocketSession , JSONArray> list4 = new HashMap<>();     //나이맞는, 성별틀린 애들모음
+            Map< WebSocketSession , JSONArray> list5 = new HashMap<>();     //나이틀린, 나이증가후 나이맞는, 성별맞는 애들모음
+            Map< WebSocketSession , JSONArray> list6 = new HashMap<>();     //나이틀린, 나이증가후 나이맞는, 성별틀린 애들모음
+                                                                            //나이틀린, 나이증가후 나이안맞는 애들은 알람띄우기
+
+
+
+            //나이맞는 놈들 중에서
+            if(list1.size()!=0) {           //나이맞는놈 한명이라도 있다면
+                //System.out.println(list1);
+                if(list1.size()!=0) {
+                    for (WebSocketSession socketSession : list1.keySet()) {
+                        if (((String) (((list1.get(socketSession)).getJSONObject(0)).get("ysex"))).equals(continue_tsex)) {     //성별 맞다면
+                            //상대방 아이디
+                            String t1 = (String) ((list1.get(socketSession)).getJSONObject(0)).get("from");
+                            //상대방 타겟성별
+                            String t2 = (String) ((list1.get(socketSession)).getJSONObject(0)).get("tsex");
+                            //상대방 자신성별
+                            String t3 = (String) ((list1.get(socketSession)).getJSONObject(0)).get("ysex");
+                            //상대방 닉네임
+                            String t4 = (String) ((list1.get(socketSession)).getJSONObject(0)).get("yname");
+                            //상대방 나이
+                            String t5 = (String) ((list1.get(socketSession)).getJSONObject(0)).get("yage");
+                            String t6 = ((String) (((list1.get(socketSession)).getJSONObject(0)).get("locationX")));
+                            String t7 = ((String) (((list1.get(socketSession)).getJSONObject(0)).get("locationY")));
+
+                            //나이맞는대상모음
+                            JSONArray jsonArray2 = new JSONArray();
+                            JSONObject jsonObject2 = new JSONObject();
+                            jsonObject2.put("from", t1);
+                            jsonObject2.put("tsex", t2);
+                            jsonObject2.put("ysex", t3);
+                            jsonObject2.put("inchat", "");
+                            jsonObject2.put("yname", t4);
+                            jsonObject2.put("yage", t5);
+                            jsonObject2.put("locationX", t6);
+                            jsonObject2.put("locationY", t7);
+                            jsonArray2.put(jsonObject2);
+                            list3.put(socketSession, jsonArray2);
+
+                        } else {                                                                                                    //성별 안맞다면
+                            //System.out.println(socketSession);
+                            //상대방 아이디
+                            String t1 = (String) ((list1.get(socketSession)).getJSONObject(0)).get("from");
+                            //상대방 타겟성별
+                            String t2 = (String) ((list1.get(socketSession)).getJSONObject(0)).get("tsex");
+                            //상대방 자신성별
+                            String t3 = (String) ((list1.get(socketSession)).getJSONObject(0)).get("ysex");
+                            //상대방 닉네임
+                            String t4 = (String) ((list1.get(socketSession)).getJSONObject(0)).get("yname");
+                            //상대방 나이
+                            String t5 = (String) ((list1.get(socketSession)).getJSONObject(0)).get("yage");
+                            String t6 = ((String) (((list1.get(socketSession)).getJSONObject(0)).get("locationX")));
+                            String t7 = ((String) (((list1.get(socketSession)).getJSONObject(0)).get("locationY")));
+
+                            //나이맞는대상모음
+                            JSONArray jsonArray2 = new JSONArray();
+                            JSONObject jsonObject2 = new JSONObject();
+                            jsonObject2.put("from", t1);
+                            jsonObject2.put("tsex", t2);
+                            jsonObject2.put("ysex", t3);
+                            jsonObject2.put("inchat", "");
+                            jsonObject2.put("yname", t4);
+                            jsonObject2.put("yage", t5);
+                            jsonObject2.put("locationX", t6);
+                            jsonObject2.put("locationY", t7);
+                            jsonArray2.put(jsonObject2);
+                            list4.put(socketSession, jsonArray2);
+                        }
+                    }
+                }
+            }else{  //나이 맞는 놈들 아예 없을시
+                //System.out.println(list2);
+                if(list2.size()!=0) {
+                    for (WebSocketSession socketSession : list2.keySet()) {
+                        int qwer = 0;
+                        int index_age2 = Integer.parseInt((String) (((list2.get(socketSession)).getJSONObject(0)).get("yage")));  //상대 나이 가져오기
+                        if (index_age2 <= Integer.parseInt(continue_yage) + 2 && index_age2 >= Integer.parseInt(continue_yage) - 2) { //나이증가 --- 나이맞을시
+                            if (((String) (((list2.get(socketSession)).getJSONObject(0)).get("ysex"))).equals(continue_tsex)) {     //성별 맞다면
+                                //상대방 아이디
+                                String t1 = (String) ((list2.get(socketSession)).getJSONObject(0)).get("from");
+                                //상대방 타겟성별
+                                String t2 = (String) ((list2.get(socketSession)).getJSONObject(0)).get("tsex");
+                                //상대방 자신성별
+                                String t3 = (String) ((list2.get(socketSession)).getJSONObject(0)).get("ysex");
+                                //상대방 닉네임
+                                String t4 = (String) ((list2.get(socketSession)).getJSONObject(0)).get("yname");
+                                //상대방 나이
+                                String t5 = (String) ((list2.get(socketSession)).getJSONObject(0)).get("yage");
+                                String t6 = ((String) (((list2.get(socketSession)).getJSONObject(0)).get("locationX")));
+                                String t7 = ((String) (((list2.get(socketSession)).getJSONObject(0)).get("locationY")));
+
+                                //나이맞는대상모음
+                                JSONArray jsonArray2 = new JSONArray();
+                                JSONObject jsonObject2 = new JSONObject();
+                                jsonObject2.put("from", t1);
+                                jsonObject2.put("tsex", t2);
+                                jsonObject2.put("ysex", t3);
+                                jsonObject2.put("inchat", "");
+                                jsonObject2.put("yname", t4);
+                                jsonObject2.put("yage", t5);
+                                jsonObject2.put("locationX", t6);
+                                jsonObject2.put("locationY", t7);
+                                jsonArray2.put(jsonObject2);
+                                list5.put(socketSession, jsonArray2);
+                            } else {                                                                                                          //성별틀릴시
+                                //상대방 아이디
+                                String t1 = (String) ((list2.get(socketSession)).getJSONObject(0)).get("from");
+                                //상대방 타겟성별
+                                String t2 = (String) ((list2.get(socketSession)).getJSONObject(0)).get("tsex");
+                                //상대방 자신성별
+                                String t3 = (String) ((list2.get(socketSession)).getJSONObject(0)).get("ysex");
+                                //상대방 닉네임
+                                String t4 = (String) ((list2.get(socketSession)).getJSONObject(0)).get("yname");
+                                //상대방 나이
+                                String t5 = (String) ((list2.get(socketSession)).getJSONObject(0)).get("yage");
+                                String t6 = ((String) (((list2.get(socketSession)).getJSONObject(0)).get("locationX")));
+                                String t7 = ((String) (((list2.get(socketSession)).getJSONObject(0)).get("locationY")));
+
+                                //나이맞는대상모음
+                                JSONArray jsonArray2 = new JSONArray();
+                                JSONObject jsonObject2 = new JSONObject();
+                                jsonObject2.put("from", t1);
+                                jsonObject2.put("tsex", t2);
+                                jsonObject2.put("ysex", t3);
+                                jsonObject2.put("inchat", "");
+                                jsonObject2.put("yname", t4);
+                                jsonObject2.put("yage", t5);
+                                jsonObject2.put("locationX", t6);
+                                jsonObject2.put("locationY", t7);
+                                jsonArray2.put(jsonObject2);
+                                list6.put(socketSession, jsonArray2);
+                            }
+                        } else {                                      //나이증가 --- 나이안맞을시
+                            qwer++;
+                        }
+                        if (qwer == list2.size()) {                 //나이증가해도 전부 안 맞을시
+                            if (theEnd == 0) {
+                                CharSequence alert2_4 = "찾는 사람이 없습니다";
+                                TextMessage message_2u_4 = new TextMessage(alert2_4);
+                                session.sendMessage(message_2u_4);
+                                theEnd = 1;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            if(theEnd==0) {//걸렸으면 나가삼
+                //나이맞는, 성별맞는, 거리맞는 애들은 바로 매치
+
+                //나이맞는, 성별맞는, 거리틀린 애들 거리증가후 거리맞은 애들 매치
+                //나이맞는, 성별맞는, 거리틀린 애들 거리증가후 거리맞은 애들 알람
+
+                if (list3.size() != 0) {           //나이맞는,성별맞는 한명이라도 있다면
+                    //System.out.println("qwe");
+                    for (WebSocketSession socketSession : list3.keySet()) {
+                        double qq1 = Double.parseDouble(continue_locationX);
+                        double qq2 = Double.parseDouble(continue_locationY);
+                        double qq3 = Double.parseDouble(((String) (((list3.get(socketSession)).getJSONObject(0)).get("locationX"))));
+                        double qq4 = Double.parseDouble(((String) (((list3.get(socketSession)).getJSONObject(0)).get("locationY"))));
+                        double qqq = mapService.distance(qq1, qq2, qq3, qq4);
+
+                        if (qqq < 1) {                 //나이맞는, 성별맞는, 거리맞는 애들 -> 바로 매치
+                            if(theEnd==0) {
+                                //상대방 아이디
+                                String t1 = (String) ((list3.get(socketSession)).getJSONObject(0)).get("from");
+                                //상대방 타겟성별
+                                String t2 = (String) ((list3.get(socketSession)).getJSONObject(0)).get("tsex");
+                                //상대방 자신성별
+                                String t3 = (String) ((list3.get(socketSession)).getJSONObject(0)).get("ysex");
+                                //상대방 닉네임
+                                String t4 = (String) ((list3.get(socketSession)).getJSONObject(0)).get("yname");
+                                //상대방 나이
+                                String t5 = (String) ((list3.get(socketSession)).getJSONObject(0)).get("yage");
+                                String t6 = ((String) (((list3.get(socketSession)).getJSONObject(0)).get("locationX")));
+                                String t7 = ((String) (((list3.get(socketSession)).getJSONObject(0)).get("locationY")));
+
+                                //자기 아이디
+                                String y1 = (String) object.get("from");
+                                //타겟 성별
+                                String y2 = continue_tsex;
+                                //자기 성별
+                                String y3 = continue_ysex;
+                                //자기 닉네임
+                                String y4 = continue_yname;
+                                //자기 나이
+                                String y5 = continue_yage;
+                                String y6 = continue_locationX;
+                                String y7 = continue_locationY;
+
+                                //상대방에 상대방정보+채팅방에 자신 아이디 입력
+                                JSONArray jsonArray2 = new JSONArray();
+                                JSONObject jsonObject2 = new JSONObject();
+                                jsonObject2.put("from", t1);
+                                jsonObject2.put("tsex", t2);
+                                jsonObject2.put("ysex", t3);
+                                jsonObject2.put("inchat", y1);
+                                jsonObject2.put("yname", t4);
+                                jsonObject2.put("yage", t5);
+                                jsonObject2.put("locationX", t6);
+                                jsonObject2.put("locationY", t7);
+                                jsonArray2.put(jsonObject2);
+                                list.put(socketSession, jsonArray2);
+
+                                //자신정보에 자신정보+채팅방에 상대 아이디 입력
+                                JSONArray jsonArray3 = new JSONArray();
+                                JSONObject jsonObject3 = new JSONObject();
+                                jsonObject3.put("from", y1);
+                                jsonObject3.put("tsex", y2);
+                                jsonObject3.put("ysex", y3);
+                                jsonObject3.put("inchat", t1);
+                                jsonObject3.put("yname", y4);
+                                jsonObject3.put("yage", y5);
+                                jsonObject3.put("locationX", y6);
+                                jsonObject3.put("locationY", y7);
+                                jsonArray3.put(jsonObject3);
+                                list.put(session, jsonArray3);
+
+                                //메세지 보내기
+                                socketSession.sendMessage(message);
+                                theEnd = 1;
+                                break;
+                            }
+                        } else {                      //나이맞는, 성별맞는, 거리틀린 애들
+                            if (qqq < 2) {
+                                if(theEnd==0) {
+                                    //상대방 아이디
+                                    String t1 = (String) ((list3.get(socketSession)).getJSONObject(0)).get("from");
+                                    //상대방 타겟성별
+                                    String t2 = (String) ((list3.get(socketSession)).getJSONObject(0)).get("tsex");
+                                    //상대방 자신성별
+                                    String t3 = (String) ((list3.get(socketSession)).getJSONObject(0)).get("ysex");
+                                    //상대방 닉네임
+                                    String t4 = (String) ((list3.get(socketSession)).getJSONObject(0)).get("yname");
+                                    //상대방 나이
+                                    String t5 = (String) ((list3.get(socketSession)).getJSONObject(0)).get("yage");
+                                    String t6 = ((String) (((list3.get(socketSession)).getJSONObject(0)).get("locationX")));
+                                    String t7 = ((String) (((list3.get(socketSession)).getJSONObject(0)).get("locationY")));
+
+                                    //자기 아이디
+                                    String y1 = (String) object.get("from");
+                                    //타겟 성별
+                                    String y2 = continue_tsex;
+                                    //자기 성별
+                                    String y3 = continue_ysex;
+                                    //자기 닉네임
+                                    String y4 = continue_yname;
+                                    //자기 나이
+                                    String y5 = continue_yage;
+                                    String y6 = continue_locationX;
+                                    String y7 = continue_locationY;
+
+                                    //상대방에 상대방정보+채팅방에 자신 아이디 입력
+                                    JSONArray jsonArray2 = new JSONArray();
+                                    JSONObject jsonObject2 = new JSONObject();
+                                    jsonObject2.put("from", t1);
+                                    jsonObject2.put("tsex", t2);
+                                    jsonObject2.put("ysex", t3);
+                                    jsonObject2.put("inchat", y1);
+                                    jsonObject2.put("yname", t4);
+                                    jsonObject2.put("yage", t5);
+                                    jsonObject2.put("locationX", t6);
+                                    jsonObject2.put("locationY", t7);
+                                    jsonArray2.put(jsonObject2);
+                                    list.put(socketSession, jsonArray2);
+
+                                    //자신정보에 자신정보+채팅방에 상대 아이디 입력
+                                    JSONArray jsonArray3 = new JSONArray();
+                                    JSONObject jsonObject3 = new JSONObject();
+                                    jsonObject3.put("from", y1);
+                                    jsonObject3.put("tsex", y2);
+                                    jsonObject3.put("ysex", y3);
+                                    jsonObject3.put("inchat", t1);
+                                    jsonObject3.put("yname", y4);
+                                    jsonObject3.put("yage", y5);
+                                    jsonObject3.put("locationX", y6);
+                                    jsonObject3.put("locationY", y7);
+                                    jsonArray3.put(jsonObject3);
+                                    list.put(session, jsonArray3);
+
+                                    //메세지 보내기
+                                    socketSession.sendMessage(message);
+                                    theEnd = 1;
+                                    break;
+                                }
+                            }else{
+                                if(theEnd==0) {
+                                    CharSequence alert2_4 = "찾는 사람이 없습니다";
+                                    TextMessage message_2u_4 = new TextMessage(alert2_4);
+                                    session.sendMessage(message_2u_4);
+                                    theEnd = 1;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } else {                  //나이맞는,성별맞는 아예 없을시
+                    //System.out.println("2323");
+                    //System.out.println(list4);
+                    if(list4.size()!=0) {
+                        for (WebSocketSession socketSession : list4.keySet()) {
+                            System.out.println(socketSession);
+                            //성별무상으로 검사x후 거리검색
+                            double qq1 = Double.parseDouble(continue_locationX);
+                            double qq2 = Double.parseDouble(continue_locationY);
+                            double qq3 = Double.parseDouble(((String) (((list4.get(socketSession)).getJSONObject(0)).get("locationX"))));
+                            double qq4 = Double.parseDouble(((String) (((list4.get(socketSession)).getJSONObject(0)).get("locationY"))));
+                            double qqq = mapService.distance(qq1, qq2, qq3, qq4);
+                            //나이맞는 성별없앤 거리맞는
+                            if (qqq < 1) {                                                                      //거리맞을시 바로매치
+                                if (theEnd == 0) {
+                                    //상대방 아이디
+                                    String t1 = (String) ((list4.get(socketSession)).getJSONObject(0)).get("from");
+                                    //상대방 타겟성별
+                                    String t2 = (String) ((list4.get(socketSession)).getJSONObject(0)).get("tsex");
+                                    //상대방 자신성별
+                                    String t3 = (String) ((list4.get(socketSession)).getJSONObject(0)).get("ysex");
+                                    //상대방 닉네임
+                                    String t4 = (String) ((list4.get(socketSession)).getJSONObject(0)).get("yname");
+                                    //상대방 나이
+                                    String t5 = (String) ((list4.get(socketSession)).getJSONObject(0)).get("yage");
+                                    String t6 = ((String) (((list4.get(socketSession)).getJSONObject(0)).get("locationX")));
+                                    String t7 = ((String) (((list4.get(socketSession)).getJSONObject(0)).get("locationY")));
+
+                                    //자기 아이디
+                                    String y1 = (String) object.get("from");
+                                    //타겟 성별
+                                    String y2 = continue_tsex;
+                                    //자기 성별
+                                    String y3 = continue_ysex;
+                                    //자기 닉네임
+                                    String y4 = continue_yname;
+                                    //자기 나이
+                                    String y5 = continue_yage;
+                                    String y6 = continue_locationX;
+                                    String y7 = continue_locationY;
+
+                                    //상대방에 상대방정보+채팅방에 자신 아이디 입력
+                                    JSONArray jsonArray2 = new JSONArray();
+                                    JSONObject jsonObject2 = new JSONObject();
+                                    jsonObject2.put("from", t1);
+                                    jsonObject2.put("tsex", t2);
+                                    jsonObject2.put("ysex", t3);
+                                    jsonObject2.put("inchat", y1);
+                                    jsonObject2.put("yname", t4);
+                                    jsonObject2.put("yage", t5);
+                                    jsonObject2.put("locationX", t6);
+                                    jsonObject2.put("locationY", t7);
+                                    jsonArray2.put(jsonObject2);
+                                    list.put(socketSession, jsonArray2);
+
+                                    //자신정보에 자신정보+채팅방에 상대 아이디 입력
+                                    JSONArray jsonArray3 = new JSONArray();
+                                    JSONObject jsonObject3 = new JSONObject();
+                                    jsonObject3.put("from", y1);
+                                    jsonObject3.put("tsex", y2);
+                                    jsonObject3.put("ysex", y3);
+                                    jsonObject3.put("inchat", t1);
+                                    jsonObject3.put("yname", y4);
+                                    jsonObject3.put("yage", y5);
+                                    jsonObject3.put("locationX", y6);
+                                    jsonObject3.put("locationY", y7);
+                                    jsonArray3.put(jsonObject3);
+                                    list.put(session, jsonArray3);
+
+                                    //메세지 보내기
+                                    socketSession.sendMessage(message);
+                                    theEnd = 1;
+                                    break;
+                                }
+                            } else {                                                                        //거리틀릴시 거리증가후 검사
+                                if (qqq < 2) {                                                                     //거리틀릴시 거리증가후 거리맞을시     //나이맞는 성별없앤 거리틀린
+                                    if (theEnd == 0) {
+                                        //상대방 아이디
+                                        String t1 = (String) ((list4.get(socketSession)).getJSONObject(0)).get("from");
+                                        //상대방 타겟성별
+                                        String t2 = (String) ((list4.get(socketSession)).getJSONObject(0)).get("tsex");
+                                        //상대방 자신성별
+                                        String t3 = (String) ((list4.get(socketSession)).getJSONObject(0)).get("ysex");
+                                        //상대방 닉네임
+                                        String t4 = (String) ((list4.get(socketSession)).getJSONObject(0)).get("yname");
+                                        //상대방 나이
+                                        String t5 = (String) ((list4.get(socketSession)).getJSONObject(0)).get("yage");
+                                        String t6 = ((String) (((list4.get(socketSession)).getJSONObject(0)).get("locationX")));
+                                        String t7 = ((String) (((list4.get(socketSession)).getJSONObject(0)).get("locationY")));
+
+                                        //자기 아이디
+                                        String y1 = (String) object.get("from");
+                                        //타겟 성별
+                                        String y2 = continue_tsex;
+                                        //자기 성별
+                                        String y3 = continue_ysex;
+                                        //자기 닉네임
+                                        String y4 = continue_yname;
+                                        //자기 나이
+                                        String y5 = continue_yage;
+                                        String y6 = continue_locationX;
+                                        String y7 = continue_locationY;
+
+                                        //상대방에 상대방정보+채팅방에 자신 아이디 입력
+                                        JSONArray jsonArray2 = new JSONArray();
+                                        JSONObject jsonObject2 = new JSONObject();
+                                        jsonObject2.put("from", t1);
+                                        jsonObject2.put("tsex", t2);
+                                        jsonObject2.put("ysex", t3);
+                                        jsonObject2.put("inchat", y1);
+                                        jsonObject2.put("yname", t4);
+                                        jsonObject2.put("yage", t5);
+                                        jsonObject2.put("locationX", t6);
+                                        jsonObject2.put("locationY", t7);
+                                        jsonArray2.put(jsonObject2);
+                                        list.put(socketSession, jsonArray2);
+
+                                        //자신정보에 자신정보+채팅방에 상대 아이디 입력
+                                        JSONArray jsonArray3 = new JSONArray();
+                                        JSONObject jsonObject3 = new JSONObject();
+                                        jsonObject3.put("from", y1);
+                                        jsonObject3.put("tsex", y2);
+                                        jsonObject3.put("ysex", y3);
+                                        jsonObject3.put("inchat", t1);
+                                        jsonObject3.put("yname", y4);
+                                        jsonObject3.put("yage", y5);
+                                        jsonObject3.put("locationX", y6);
+                                        jsonObject3.put("locationY", y7);
+                                        jsonArray3.put(jsonObject3);
+                                        list.put(session, jsonArray3);
+
+                                        //메세지 보내기
+                                        socketSession.sendMessage(message);
+                                        theEnd = 1;
+                                        break;
+                                    }
+                                } else {                                                          //거리틀릴시 거리증가후 거리틀릴시
+                                    if (theEnd == 0) {
+                                        CharSequence alert2_4 = "찾는 사람이 없습니다";
+                                        TextMessage message_2u_4 = new TextMessage(alert2_4);
+                                        session.sendMessage(message_2u_4);
+                                        theEnd = 1;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+
+
+            if(theEnd==0){//걸렸으면 나가삼
+                if(list5.size()!=0){                                                    //나이틀린, 나이증가후 나이맞는, 성별맞는 애들 한명이라도 있다면
+                    //System.out.println(list5);
+                    if(list5.size()!=0) {
+                        for (WebSocketSession socketSession : list5.keySet()) {
+                            //System.out.println(socketSession);
+                            double qq1 = Double.parseDouble(continue_locationX);
+                            double qq2 = Double.parseDouble(continue_locationY);
+                            double qq3 = Double.parseDouble(((String) (((list5.get(socketSession)).getJSONObject(0)).get("locationX"))));
+                            double qq4 = Double.parseDouble(((String) (((list5.get(socketSession)).getJSONObject(0)).get("locationY"))));
+                            double qqq = mapService.distance(qq1, qq2, qq3, qq4);
+                            if (qqq < 1) {                                                      //나이틀린, 나이증가후 나이맞는, 성별맞는, 거리맞는
+                                if (theEnd == 0) {
+                                    //상대방 아이디
+                                    String t1 = (String) ((list5.get(socketSession)).getJSONObject(0)).get("from");
+                                    //상대방 타겟성별
+                                    String t2 = (String) ((list5.get(socketSession)).getJSONObject(0)).get("tsex");
+                                    //상대방 자신성별
+                                    String t3 = (String) ((list5.get(socketSession)).getJSONObject(0)).get("ysex");
+                                    //상대방 닉네임
+                                    String t4 = (String) ((list5.get(socketSession)).getJSONObject(0)).get("yname");
+                                    //상대방 나이
+                                    String t5 = (String) ((list5.get(socketSession)).getJSONObject(0)).get("yage");
+                                    String t6 = ((String) (((list5.get(socketSession)).getJSONObject(0)).get("locationX")));
+                                    String t7 = ((String) (((list5.get(socketSession)).getJSONObject(0)).get("locationY")));
+
+                                    //자기 아이디
+                                    String y1 = (String) object.get("from");
+                                    //타겟 성별
+                                    String y2 = continue_tsex;
+                                    //자기 성별
+                                    String y3 = continue_ysex;
+                                    //자기 닉네임
+                                    String y4 = continue_yname;
+                                    //자기 나이
+                                    String y5 = continue_yage;
+                                    String y6 = continue_locationX;
+                                    String y7 = continue_locationY;
+
+                                    //상대방에 상대방정보+채팅방에 자신 아이디 입력
+                                    JSONArray jsonArray2 = new JSONArray();
+                                    JSONObject jsonObject2 = new JSONObject();
+                                    jsonObject2.put("from", t1);
+                                    jsonObject2.put("tsex", t2);
+                                    jsonObject2.put("ysex", t3);
+                                    jsonObject2.put("inchat", y1);
+                                    jsonObject2.put("yname", t4);
+                                    jsonObject2.put("yage", t5);
+                                    jsonObject2.put("locationX", t6);
+                                    jsonObject2.put("locationY", t7);
+                                    jsonArray2.put(jsonObject2);
+                                    list.put(socketSession, jsonArray2);
+
+                                    //자신정보에 자신정보+채팅방에 상대 아이디 입력
+                                    JSONArray jsonArray3 = new JSONArray();
+                                    JSONObject jsonObject3 = new JSONObject();
+                                    jsonObject3.put("from", y1);
+                                    jsonObject3.put("tsex", y2);
+                                    jsonObject3.put("ysex", y3);
+                                    jsonObject3.put("inchat", t1);
+                                    jsonObject3.put("yname", y4);
+                                    jsonObject3.put("yage", y5);
+                                    jsonObject3.put("locationX", y6);
+                                    jsonObject3.put("locationY", y7);
+                                    jsonArray3.put(jsonObject3);
+                                    list.put(session, jsonArray3);
+
+                                    //메세지 보내기
+                                    socketSession.sendMessage(message);
+                                    theEnd = 1;
+                                    break;
+                                }
+                            } else {
+                                if (qqq < 2) {                                                  //나이틀린, 나이증가후 나이맞는, 성별맞는, 거리틀린, 거리증가후 거리맞는
+                                    if (theEnd == 0) {
+                                        //상대방 아이디
+                                        String t1 = (String) ((list5.get(socketSession)).getJSONObject(0)).get("from");
+                                        //상대방 타겟성별
+                                        String t2 = (String) ((list5.get(socketSession)).getJSONObject(0)).get("tsex");
+                                        //상대방 자신성별
+                                        String t3 = (String) ((list5.get(socketSession)).getJSONObject(0)).get("ysex");
+                                        //상대방 닉네임
+                                        String t4 = (String) ((list5.get(socketSession)).getJSONObject(0)).get("yname");
+                                        //상대방 나이
+                                        String t5 = (String) ((list5.get(socketSession)).getJSONObject(0)).get("yage");
+                                        String t6 = ((String) (((list5.get(socketSession)).getJSONObject(0)).get("locationX")));
+                                        String t7 = ((String) (((list5.get(socketSession)).getJSONObject(0)).get("locationY")));
+
+                                        //자기 아이디
+                                        String y1 = (String) object.get("from");
+                                        //타겟 성별
+                                        String y2 = continue_tsex;
+                                        //자기 성별
+                                        String y3 = continue_ysex;
+                                        //자기 닉네임
+                                        String y4 = continue_yname;
+                                        //자기 나이
+                                        String y5 = continue_yage;
+                                        String y6 = continue_locationX;
+                                        String y7 = continue_locationY;
+
+                                        //상대방에 상대방정보+채팅방에 자신 아이디 입력
+                                        JSONArray jsonArray2 = new JSONArray();
+                                        JSONObject jsonObject2 = new JSONObject();
+                                        jsonObject2.put("from", t1);
+                                        jsonObject2.put("tsex", t2);
+                                        jsonObject2.put("ysex", t3);
+                                        jsonObject2.put("inchat", y1);
+                                        jsonObject2.put("yname", t4);
+                                        jsonObject2.put("yage", t5);
+                                        jsonObject2.put("locationX", t6);
+                                        jsonObject2.put("locationY", t7);
+                                        jsonArray2.put(jsonObject2);
+                                        list.put(socketSession, jsonArray2);
+
+                                        //자신정보에 자신정보+채팅방에 상대 아이디 입력
+                                        JSONArray jsonArray3 = new JSONArray();
+                                        JSONObject jsonObject3 = new JSONObject();
+                                        jsonObject3.put("from", y1);
+                                        jsonObject3.put("tsex", y2);
+                                        jsonObject3.put("ysex", y3);
+                                        jsonObject3.put("inchat", t1);
+                                        jsonObject3.put("yname", y4);
+                                        jsonObject3.put("yage", y5);
+                                        jsonObject3.put("locationX", y6);
+                                        jsonObject3.put("locationY", y7);
+                                        jsonArray3.put(jsonObject3);
+                                        list.put(session, jsonArray3);
+
+                                        //메세지 보내기
+                                        socketSession.sendMessage(message);
+                                        theEnd = 1;
+                                        break;
+                                    }
+                                } else {                                                      //나이틀린, 나이증가후 나이맞는, 성별맞는, 거리틀린, 거리증가후 거리틀린 -> 알람띄우기
+                                    if (theEnd == 0) {
+                                        CharSequence alert2_4 = "찾는 사람이 없습니다";
+                                        TextMessage message_2u_4 = new TextMessage(alert2_4);
+                                        session.sendMessage(message_2u_4);
+                                        theEnd = 1;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }else{                                                                  //나이틀린, 나이증가후 나이맞는, 성별맞는 애들 없다면 --> 성별무상으로 거리검색
+                    if(list6.size()!=0) {
+                        for (WebSocketSession socketSession : list6.keySet()) {
+                            double qq1 = Double.parseDouble(continue_locationX);
+                            double qq2 = Double.parseDouble(continue_locationY);
+                            double qq3 = Double.parseDouble(((String) (((list6.get(socketSession)).getJSONObject(0)).get("locationX"))));
+                            double qq4 = Double.parseDouble(((String) (((list6.get(socketSession)).getJSONObject(0)).get("locationY"))));
+                            double qqq = mapService.distance(qq1, qq2, qq3, qq4);
+                            if (qqq < 1) {                                  //나이틀린, 나이증가후 나이맞는, 성별틀린, 성별무상후 거리맞는 애들 매칭
+                                if (theEnd == 0) {
+                                    //상대방 아이디
+                                    String t1 = (String) ((list6.get(socketSession)).getJSONObject(0)).get("from");
+                                    //상대방 타겟성별
+                                    String t2 = (String) ((list6.get(socketSession)).getJSONObject(0)).get("tsex");
+                                    //상대방 자신성별
+                                    String t3 = (String) ((list6.get(socketSession)).getJSONObject(0)).get("ysex");
+                                    //상대방 닉네임
+                                    String t4 = (String) ((list6.get(socketSession)).getJSONObject(0)).get("yname");
+                                    //상대방 나이
+                                    String t5 = (String) ((list6.get(socketSession)).getJSONObject(0)).get("yage");
+                                    String t6 = ((String) (((list6.get(socketSession)).getJSONObject(0)).get("locationX")));
+                                    String t7 = ((String) (((list6.get(socketSession)).getJSONObject(0)).get("locationY")));
+
+                                    //자기 아이디
+                                    String y1 = (String) object.get("from");
+                                    //타겟 성별
+                                    String y2 = continue_tsex;
+                                    //자기 성별
+                                    String y3 = continue_ysex;
+                                    //자기 닉네임
+                                    String y4 = continue_yname;
+                                    //자기 나이
+                                    String y5 = continue_yage;
+                                    String y6 = continue_locationX;
+                                    String y7 = continue_locationY;
+
+                                    //상대방에 상대방정보+채팅방에 자신 아이디 입력
+                                    JSONArray jsonArray2 = new JSONArray();
+                                    JSONObject jsonObject2 = new JSONObject();
+                                    jsonObject2.put("from", t1);
+                                    jsonObject2.put("tsex", t2);
+                                    jsonObject2.put("ysex", t3);
+                                    jsonObject2.put("inchat", y1);
+                                    jsonObject2.put("yname", t4);
+                                    jsonObject2.put("yage", t5);
+                                    jsonObject2.put("locationX", t6);
+                                    jsonObject2.put("locationY", t7);
+                                    jsonArray2.put(jsonObject2);
+                                    list.put(socketSession, jsonArray2);
+
+                                    //자신정보에 자신정보+채팅방에 상대 아이디 입력
+                                    JSONArray jsonArray3 = new JSONArray();
+                                    JSONObject jsonObject3 = new JSONObject();
+                                    jsonObject3.put("from", y1);
+                                    jsonObject3.put("tsex", y2);
+                                    jsonObject3.put("ysex", y3);
+                                    jsonObject3.put("inchat", t1);
+                                    jsonObject3.put("yname", y4);
+                                    jsonObject3.put("yage", y5);
+                                    jsonObject3.put("locationX", y6);
+                                    jsonObject3.put("locationY", y7);
+                                    jsonArray3.put(jsonObject3);
+                                    list.put(session, jsonArray3);
+
+                                    //메세지 보내기
+                                    socketSession.sendMessage(message);
+                                    theEnd = 1;
+                                    break;
+                                }
+                            } else {
+                                if (qqq < 2) {
+                                    if (theEnd == 0) {                                 //나이틀린, 나이증가후 나이맞는, 성별틀린, 성별무상후 거리틀린, 거리증가후 거리맞는 애들 매칭
+                                        //상대방 아이디
+                                        String t1 = (String) ((list6.get(socketSession)).getJSONObject(0)).get("from");
+                                        //상대방 타겟성별
+                                        String t2 = (String) ((list6.get(socketSession)).getJSONObject(0)).get("tsex");
+                                        //상대방 자신성별
+                                        String t3 = (String) ((list6.get(socketSession)).getJSONObject(0)).get("ysex");
+                                        //상대방 닉네임
+                                        String t4 = (String) ((list6.get(socketSession)).getJSONObject(0)).get("yname");
+                                        //상대방 나이
+                                        String t5 = (String) ((list6.get(socketSession)).getJSONObject(0)).get("yage");
+                                        String t6 = ((String) (((list6.get(socketSession)).getJSONObject(0)).get("locationX")));
+                                        String t7 = ((String) (((list6.get(socketSession)).getJSONObject(0)).get("locationY")));
+
+                                        //자기 아이디
+                                        String y1 = (String) object.get("from");
+                                        //타겟 성별
+                                        String y2 = continue_tsex;
+                                        //자기 성별
+                                        String y3 = continue_ysex;
+                                        //자기 닉네임
+                                        String y4 = continue_yname;
+                                        //자기 나이
+                                        String y5 = continue_yage;
+                                        String y6 = continue_locationX;
+                                        String y7 = continue_locationY;
+
+                                        //상대방에 상대방정보+채팅방에 자신 아이디 입력
+                                        JSONArray jsonArray2 = new JSONArray();
+                                        JSONObject jsonObject2 = new JSONObject();
+                                        jsonObject2.put("from", t1);
+                                        jsonObject2.put("tsex", t2);
+                                        jsonObject2.put("ysex", t3);
+                                        jsonObject2.put("inchat", y1);
+                                        jsonObject2.put("yname", t4);
+                                        jsonObject2.put("yage", t5);
+                                        jsonObject2.put("locationX", t6);
+                                        jsonObject2.put("locationY", t7);
+                                        jsonArray2.put(jsonObject2);
+                                        list.put(socketSession, jsonArray2);
+
+                                        //자신정보에 자신정보+채팅방에 상대 아이디 입력
+                                        JSONArray jsonArray3 = new JSONArray();
+                                        JSONObject jsonObject3 = new JSONObject();
+                                        jsonObject3.put("from", y1);
+                                        jsonObject3.put("tsex", y2);
+                                        jsonObject3.put("ysex", y3);
+                                        jsonObject3.put("inchat", t1);
+                                        jsonObject3.put("yname", y4);
+                                        jsonObject3.put("yage", y5);
+                                        jsonObject3.put("locationX", y6);
+                                        jsonObject3.put("locationY", y7);
+                                        jsonArray3.put(jsonObject3);
+                                        list.put(session, jsonArray3);
+
+                                        //메세지 보내기
+                                        socketSession.sendMessage(message);
+                                        theEnd = 1;
+                                        break;
+                                    }
+                                } else {
+                                    if (theEnd == 0) {                                //나이틀린, 나이증가후 나이맞는, 성별틀린, 성별무상후 거리틀린, 거리증가후 거리틀린 ->알람 띄우기
+                                        CharSequence alert2_4 = "찾는 사람이 없습니다";
+                                        TextMessage message_2u_4 = new TextMessage(alert2_4);
+                                        session.sendMessage(message_2u_4);
+                                        theEnd = 1;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(theEnd==0){
+                CharSequence alert2_4 = "찾는 사람이 없습니다";
+                TextMessage message_2u_4 = new TextMessage(alert2_4);
+                session.sendMessage(message_2u_4);
+                theEnd = 1;
             }
         }
     }
