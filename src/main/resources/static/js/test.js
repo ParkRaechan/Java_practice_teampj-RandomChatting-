@@ -6,13 +6,9 @@ var ysex = sessionStorage.getItem("ysex");
 var tsex = sessionStorage.getItem("tsex");
 var locationX = sessionStorage.getItem("locationX");
 var locationY = sessionStorage.getItem("locationY");
-$("#id").html(id);
 $("#yname").html(yname);
 $("#yage").html(yage);
 $("#ysex").html(ysex);
-$("#tsex").html(tsex);
-$("#locationX").html(locationX);
-$("#locationY").html(locationY);
 
 /////////////////////////////////소켓 설정 구간////////////
 
@@ -57,23 +53,21 @@ function onMessage2(msg){
 
 
     if(data.length==11){
-        alert(data);
-    }else if(data.length==20){
-        alert(data);
-    }else if(data.length==16){
-        alert(data);
+        $("#chat").append("<h5 style='color:blue;'>"+data+"</h5>");
     }
     else{
         let opponent_1 = data.split(",")[3];//보낸사람 닉네임 데이터 통째로 가져오기
-        let opponent = opponent_1.split(":")[1]; // 보낸사람 닉네임만 가져오기
+        let opponent = opponent_1.split('\":\"')[1].split('"')[0]; // 보낸사람 닉네임만 가져오기
         //let opponent = opponent_2.substring(0,opponent_2.length-1);//}빼기
         let message_1 = data.split(",")[1];//메세지내용 데이터 통째로 가져오기
-        let message = message_1.split(":")[1]; // 메시지내용만 가져오기
+        let message = message_1.split('\":\"')[1].split('"')[0]; // 메시지내용만 가져오기
 
-        let html = "";
-        html = opponent + ":" +message;
-
-        alert(html);
+        let html = '<div class="d-flex justify-content-start mb-4">'+
+                                    '<div class="msg_cotainer">'+
+                                        message+
+                                    '</div>'+
+                                  '</div>';
+        $("#chat").append(html);
         //alert(data);
     }
 
@@ -116,6 +110,12 @@ $("#sendbtn").click( function(){
         }
         //index++;
         send(  jsonmsg  );
+        $("#chat").append('<div class="d-flex justify-content-end mb-4">'+
+                               '<div class="msg_cotainer_send">'+
+                                 msg+
+                               '</div>'+
+                             '</div>');
+        $("#input3").val("");
     }
 });
 
