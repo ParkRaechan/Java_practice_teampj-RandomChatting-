@@ -1,10 +1,17 @@
 var id = sessionStorage.getItem("mid");
-var yy = sessionStorage.getItem("ysex");
-var tt = sessionStorage.getItem("tsex");
+var yname = sessionStorage.getItem("yname");
+var yage = sessionStorage.getItem("yage");
+var ysex = sessionStorage.getItem("ysex");
+var tsex = sessionStorage.getItem("tsex");
+var locationX = sessionStorage.getItem("locationX");
+var locationY = sessionStorage.getItem("locationY");
 $("#id").html(id);
-$("#yy").html(yy);
-$("#tt").html(tt);
-
+$("#yname").html(yname);
+$("#yage").html(yage);
+$("#ysex").html(ysex);
+$("#tsex").html(tsex);
+$("#locationX").html(locationX);
+$("#locationY").html(locationY);
 
 /////////////////////////////////소켓 설정 구간////////////
 
@@ -18,37 +25,57 @@ msgwebsocket.onmessage = onMessage2;
 function onOpen2(){
     //정보모으기
     let from = id;
-    let ysex = yy;
-    let tsex = tt;
     let inchat = "";
     let jsonmsg = {
         "from" : from ,
         "ysex" : ysex ,
         "tsex" : tsex ,
-        "inchat" : inchat
+        "inchat" : inchat ,
+        "locationX" : locationX ,
+        "locationY" : locationY ,
+        "yname" : yname ,
+        "yage" : yage
     }
     send(  jsonmsg  );
 }
 function onClose2(){ }
 function onMessage2(msg){
     let data = msg.data; // 받은 메시지의 내용
-    let opponent_1 = data.split(",")[0];//보낸사람 데이터 통째로 가져오기
-    let opponent = opponent_1.split(":")[1]; // 보낸사람만 가져오기
-
-    let message_1 = data.split(",")[2];//메세지내용 데이터 통째로 가져오기
-    let message = message_1.split(":")[1]; // 메시지내용만 가져오기
-    //let message = qq3.substring(0,qq3.length-1);//}빼기
-    let sexual_1_1 = data.split(",")[3];//성별 데이터 통째로 가져오기
-    let sexual_1 = sexual_1_1.split(":")[1];// 성별만 가져오기
+//    let opponent_1 = data.split(",")[0];//보낸사람 데이터 통째로 가져오기
+//    let opponent = opponent_1.split(":")[1]; // 보낸사람만 가져오기
+//
+//    let message_1 = data.split(",")[2];//메세지내용 데이터 통째로 가져오기
+//    let message = message_1.split(":")[1]; // 메시지내용만 가져오기
+//    //let message = qq3.substring(0,qq3.length-1);//}빼기
+//    let sexual_1_1 = data.split(",")[3];//성별 데이터 통째로 가져오기
+//    let sexual_1 = sexual_1_1.split(":")[1];// 성별만 가져오기
     //let sexual = sexual_2.substring(0,sexual_2.length-1);//}빼기
     //let sexual_2_1 = data.split(",")[4];//성별 데이터 통째로 가져오기
     //let sexual_2_2 = sexual_2_1.split(":")[1];// 성별만 가져오기
     //let sexual_2 = sexual_2_2.substring(0,sexual_2_2.length-1);//}빼기
 
-    let html = "";
 
-    html = opponent+":"+ message+",상대성별-"+sexual_1;
-    alert(html);
+    if(data.length==11){
+        alert(data);
+    }else if(data.length==20){
+        alert(data);
+    }else if(data.length==16){
+        alert(data);
+    }
+    else{
+        let opponent_1 = data.split(",")[3];//보낸사람 닉네임 데이터 통째로 가져오기
+        let opponent = opponent_1.split(":")[1]; // 보낸사람 닉네임만 가져오기
+        //let opponent = opponent_2.substring(0,opponent_2.length-1);//}빼기
+        let message_1 = data.split(",")[1];//메세지내용 데이터 통째로 가져오기
+        let message = message_1.split(":")[1]; // 메시지내용만 가져오기
+
+        let html = "";
+        html = opponent + ":" +message;
+
+        alert(html);
+        //alert(data);
+    }
+
 
 }
 
@@ -73,36 +100,22 @@ $("#sendbtn").click( function(){
     if(index==0){
 
         let from = id;
-        let to = $("#input2").val();
         let msg = $("#input3").val();
-        let ysex = yy;
-        let tsex = tt;
         let inchat = "";
         let jsonmsg = {
             "from" : from ,
-            "to" : to ,
             "msg" : msg ,
-            "ysex" : ysex ,
-            "tsex" : tsex ,
-            "inchat" : inchat
+            //"ysex" : ysex ,
+            //"tsex" : tsex ,
+            "inchat" : inchat ,
+            //"locationX" : locationX ,
+            //"locationY" : locationY ,
+            "yname" : yname ,
+            "yage" : yage
         }
-        index++;
-        send(  jsonmsg  );
-    }else{
-        let from = id;
-        let to = $("#input2").val();
-        let msg = $("#input3").val();
-        let ysex = yy;
-        let tsex = tt;
-        let inchat = "1";
-        let jsonmsg = {
-            "from" : from ,
-            "to" : to ,
-            "msg" : msg ,
-            "ysex" : ysex ,
-            "tsex" : tsex ,
-            "inchat" : inchat
-        }
+        //index++;
         send(  jsonmsg  );
     }
 });
+
+

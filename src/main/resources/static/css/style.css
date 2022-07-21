@@ -16,13 +16,15 @@
   padding: 0; }
 
 body {
-  background-image: url("/img/bg-img/neonbg.jpg");
-  background-size: cover;
+  background-image: url("/img/bg-img/neonbg_1.jpg");
+  background-attachment: local;
+  background-size: 100% ;
   font-family: "Archivo Narrow", sans-serif;
   font-size: 14px; }
 /* 버튼 커스텀 css */
 .button_area{
     text-align:center;
+
 }
 .button {
 margin: 10% 30% 10% 0%;
@@ -46,8 +48,13 @@ margin: 10% 30% 10% 0%;
   filter: drop-shadow(0 0 20px #db3eb1) contrast(2) brightness(2);
 }
 /* 버튼 커스텀 끝 */
-.input_form, .chat_area{
-    margin-top:30%;
+.input_form, .chat_area, .youtube_area{
+    margin-top:5% !important;
+}
+.chat_text{
+    margin: 2px;
+    padding: 3px;
+    border-bottom: solid 1px aqua;
 }
 .selectForm{
     margin: 2px;
@@ -59,7 +66,7 @@ margin: 10% 30% 10% 0%;
 }
 
 .input_form_title, .chat_area_title{
-    margin:0 auto; color:navy; text-align: center;
+    margin:0 auto; color:pink; text-align: center;
 }
 .chat_area_title{
   color: #fff;
@@ -71,6 +78,13 @@ margin: 10% 30% 10% 0%;
 }
 .chat_info{
     color:aqua;
+}
+.chat_area_div1, .chat_area_div2{
+    margin:20px;
+    padding:5px;
+}
+.youtube_video{
+    width:100%;
 }
 h1,
 h2,
