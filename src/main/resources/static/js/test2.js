@@ -1,6 +1,8 @@
 
+
 //아이디 랜덤 생성
 let rand =  Math.floor( Math.random()*1001 );
+alert(rand);
 
 let mid =  rand;            //랜덤 아이디 배포
 
@@ -209,3 +211,4 @@ var geocoder = new daum.maps.services.Geocoder();
 //// 마커가 지도 위에 표시되도록 설정합니다
 //marker.setMap(map);
 //} // markerView End
+

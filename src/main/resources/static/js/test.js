@@ -1,3 +1,4 @@
+
 var id = sessionStorage.getItem("mid");
 var yname = sessionStorage.getItem("yname");
 var yage = sessionStorage.getItem("yage");
@@ -117,5 +118,4 @@ $("#sendbtn").click( function(){
         send(  jsonmsg  );
     }
 });
-
 
