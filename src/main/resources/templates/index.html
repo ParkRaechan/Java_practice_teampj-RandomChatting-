@@ -1,5 +1,6 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,15 +8,24 @@
 <body>
 <div th:replace="header.html :: header"></div>
 <br><br>
-<div class="container">
-    <div class="input_form">
+<div class="container-fluid row">
+    <div class="input_form col-sm-6 offset-3">
         <div class="row">
             <h1 class="input_form_title">랜덤 만남 채팅</h1>
-            <div id="map" style="width:100%;height:350px;"></div>
-            <input type="text" id="sample5_address" placeholder="주소">
-            <input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
-            <div class="col-sm-3 offset-3 selectForm">
-                <div><span><h4 class="small_title">당신의 성별을 선택하세요</h4></span></div>
+            <div class="col-sm-6 offset-2" id="map" style="width:50%;height:350px;"></div>
+            <div class="col-sm-3">
+                <input class="form-control" type="text" id="sample5_address" placeholder="주소" readonly>
+                <input class="form-control" type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
+                <div><span><h4 class="small_title">나이</h4></span></div>
+                <input class="form-control" type="text" id="yage">
+                <div><span><h4 class="small_title">닉네임</h4></span></div>
+                <input class="form-control" type="text" id="yname">
+                <div class="button_area row">
+                    <div class="button col-md-10 offset-1" onclick="confirm()">입장하기</div>
+                </div>
+            </div>
+            <div class="col-sm-3 offset-2 selectForm">
+                <div><span><h4 class="small_title">당신의 성별</h4></span></div>
                 <select class="form-select" id="your_sex" onchange="showValue1(this)">
                     <option value="">성별</option>
                     <option value="남">남자</option>
@@ -23,28 +33,17 @@
                 </select>
             </div>
             <div class="col-sm-3 selectForm">
-                <div><span><h4 class="small_title">상대의 성별을 선택하세요</h4></span></div>
+                <div><span><h4 class="small_title">상대의 성별</h4></span></div>
                 <select class="form-select" id="target_sex" onchange="showValue2(this)">
                     <option value="">성별</option>
                     <option value="남">남자</option>
                     <option value="여">여자</option>
                 </select>
             </div>
+        </div>
+    </div>
+    <div th:replace="rightsidebar.html::rightsidebar">
 
-        </div>
-        <div class="row">
-            <div class="col-sm-3">
-                <div><span><h4 class="small_title">당신의 나이 입력</h4></span></div>
-                <input type="text" id="yage">
-            </div>
-            <div class="col-sm-3">
-                <div><span><h4 class="small_title">당신의 닉네임 입력</h4></span></div>
-                <input type="text" id="yname">
-            </div>
-        </div>
-        <div class="button_area row">
-            <div class="button col-sm-4 offset-4" onclick="confirm()">입장하기</div>
-        </div>
     </div>
 </div>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -53,4 +52,5 @@
 <script src="/js/test2.js" type="text/javascript"></script>
 <div th:replace="footer.html :: footer"></div>
 </body>
+
 </html>
