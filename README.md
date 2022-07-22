@@ -32,11 +32,5 @@
   
 ![image](https://user-images.githubusercontent.com/100547978/180405223-fa81b65c-da75-45fe-9acb-501e0b254677.png)  
     
-![image](https://user-images.githubusercontent.com/100547978/180171019-53e9fc94-f172-4fb7-9bca-3cc1b96e020b.png)  
-  
-![스프링부트 알고리즘 수정판](https://user-images.githubusercontent.com/100547978/180121868-c791ea7e-9e87-4832-8095-668d64c50075.png)  
-  
-![image](https://user-images.githubusercontent.com/100547978/180146815-81e4b2d7-a738-422d-9f7a-5160b6f27a13.png)  
-  
 ![image](https://user-images.githubusercontent.com/100547978/180404331-e42e6bd8-b498-4725-ab83-a28f8fa3edd8.png)  
-
+  
