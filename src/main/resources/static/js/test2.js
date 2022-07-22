@@ -100,7 +100,7 @@ function confirm(){
         sessionStorage.setItem("locationY", locationY );
         sessionStorage.setItem("tsex", sex_what2 ); //상대성별 세션에 저장
         sessionStorage.setItem("ysex", sex_what1 ); //자신성별 세션에 저장
-        location.href="/chatting";
+        location.href="chatting";
     }else{
         alert("전부 입력 바람");
     }
