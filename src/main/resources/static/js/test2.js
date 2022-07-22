@@ -4,7 +4,7 @@
 let rand =  Math.floor( Math.random()*1001 );
 let mid =  rand;            //랜덤 아이디 배포
 
-
+console.log(mid);
 let sex_what1 = "";         //자신 성별 선택지
 let sex_what2 = "";         //상대 성별 선택지
 let yname_what = "";         //자신 이름
