@@ -2,7 +2,6 @@
 
 //아이디 랜덤 생성
 let rand =  Math.floor( Math.random()*1001 );
-alert(rand);
 
 let mid =  rand;            //랜덤 아이디 배포
 
@@ -23,8 +22,6 @@ const showValue1 = (target) => {
   }else{
     pass[0] = true;
     sex_what1 = target.value;
-
-    alert(target.options[target.selectedIndex].text);
   }
 }
 //상대성별선택시
@@ -35,8 +32,6 @@ const showValue2 = (target) => {
   }else{
     pass[1] = true;
     sex_what2 = target.value;
-
-    alert(target.options[target.selectedIndex].text);
   }
 }
 $("#yage").keyup(function(){

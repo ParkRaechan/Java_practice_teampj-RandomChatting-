@@ -78,8 +78,6 @@ function onMessage2(msg){
 
 
 
-
-
 ////////////////////////////전송 구간////////////
 
 //send함수
@@ -89,11 +87,20 @@ function send( jsonmsg ){
 }
 
 let index =0;
+// 입력 후 엔터키 눌렀을때
+function enterKey(){
+    if(window.event.keyCode==13){
+        toSend();
+    }
+}
 // 전송 버튼을 클릭했을때
 $("#sendbtn").click( function(){
+    toSend();
+});
+//send 에 데이터 넘기는 함수
+function toSend(){
     //정보모으기
     if(index==0){
-
         let from = id;
         let msg = $("#input3").val();
         let inchat = "";
@@ -117,5 +124,4 @@ $("#sendbtn").click( function(){
                              '</div>');
         $("#input3").val("");
     }
-});
-
+}
