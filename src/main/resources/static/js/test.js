@@ -13,7 +13,7 @@ $("#ysex").html(ysex);
 /////////////////////////////////소켓 설정 구간////////////
 
 // 1. js 웹소켓 객체 생성                      // 세션 만으로 회원 구분 X ---> 경로에 회원아이디 추가(식별용)
-let msgwebsocket = new WebSocket("ws://ip-172-31-44-198.ap-northeast-2.compute.internal/ws/message/"+id);//
+let msgwebsocket = new WebSocket("ws://13.209.47.202:8282/ws/message/"+id);//
 // 2. 웹소켓객체에 구현된 메소드 저장한다.
 msgwebsocket.onopen = onOpen2;
 msgwebsocket.onclose = onClose2;
