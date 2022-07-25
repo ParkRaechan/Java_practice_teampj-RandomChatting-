@@ -1,4 +1,4 @@
-# Java_practice_teampj-RandomChatting-
+# 주제 - 알고리즘 매칭 채팅
 
 ## 핵심 - 소켓 안에서 전부 해결 [DB사용 X]    
   
