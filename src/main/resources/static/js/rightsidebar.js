@@ -1,7 +1,7 @@
 youtube();
 function youtube(){
     $.ajax({
-        url:"https://www.googleapis.com/youtube/v3/videos?key=AIzaSyCM06nnAeGEy13JNCVyTWCsnJGfDGia81E&part=snippet&chart=mostPopular&maxResults=3&regionCode=kr",
+        url:"https://www.googleapis.com/youtube/v3/videos?key=구글api키기입&part=snippet&chart=mostPopular&maxResults=3&regionCode=kr",
         success:function(data){
             let items=data.items;
             let html='"<div><span class="chat_info">유튜브 실시간 급상승</span>&nbsp<span onclick="youtube()" style="color:yellow;">새로고침</span></div>"';
@@ -14,4 +14,5 @@ function youtube(){
             $("#youtube").html(html);
         }
     });
+
 }
