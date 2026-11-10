@@ -1,20 +1,8 @@
-# 주제 - 알고리즘 매칭 채팅
+<img src="https://user-images.githubusercontent.com/100547978/180348593-2bcef817-9937-4c72-9061-71889689ce3d.png" width="700" height="380">  
 
-## 핵심 - 소켓 안에서 전부 해결 [DB사용 X]    
-
-해당 팀 프로젝트 리뷰
-  https://parkrc1201log.tistory.com/24
-  
+# 💬 알고리즘 매칭 채팅  
+https://parkrc1201log.tistory.com/24  
 --------  
-## 시연영상 - 촬영필요  
-  
---------  
-## 소개 및 설명  
-![image](https://user-images.githubusercontent.com/100547978/180348593-2bcef817-9937-4c72-9061-71889689ce3d.png)  
-![image](https://user-images.githubusercontent.com/100547978/180403606-7e34ac28-fc85-4df3-922c-ed95d2fa18fe.png)  
-![image](https://user-images.githubusercontent.com/100547978/180403558-2d98d8d3-5af8-47c0-997d-19743d2f1568.png)  
-
-
 ## 📌 Project Overview
 
 **너만오면GO**는 Spring Boot와 WebSocket 기반의 **일회성 실시간 매칭 채팅** 팀 프로젝트입니다. 나이, 선호 성별, 위치를 평가해 대화 상대를 연결하며 채팅 기록은 데이터베이스에 저장하지 않습니다.
@@ -150,39 +138,13 @@ export KAKAO_JAVASCRIPT_KEY="YOUR_KAKAO_JAVASCRIPT_KEY"
 # .\gradlew.bat bootRun
 ```
 
-**Kakao Developers**에서 JavaScript 키를 발급하고 사용 도메인을 등록해야 합니다. 카카오맵 JavaScript SDK 키는 브라우저에서 사용하므로 완전히 숨길 수 없습니다. 하드코딩을 제거하여 Git에 값이 저장되는 것을 방지하고 **허용 도메인을 제한**하는 것이 핵심입니다.
-
-## ✅ Implementation & Verification
-
-- [x] 조건 분기 방식에서 점수 기반 매칭 정책으로 개선
-- [x] WebSocket, 세션 관리, 매칭 정책, 데이터 모델 분리
-- [x] JUnit 단위 테스트 코드 작성
-- [x] JSON 파싱 및 메시지 텍스트 출력 개선
-- [x] Kakao JavaScript 키 하드코딩 제거 및 환경 변수 설정
-- [ ] 전체 Gradle 빌드 및 JUnit 실제 실행 검증
-- [ ] 브라우저 간 양방향 채팅 통합 테스트
-- [ ] 동시 접속, 끊김, 재연결 테스트
-
-## 🔒 Security Note
-
-`.gitignore`로 로컬 키 설정, IDE 개인 설정 및 빌드 파일의 신규 추적을 차단합니다. **이미 과거 커밋에 올라간 키는 `.gitignore`로 삭제되지 않습니다.** 이전 키는 폐기/재발급하고, 필요한 경우 Git 이력 정리도 별도로 진행해야 합니다.
-
-## 📖 References
-
-- [매칭 알고리즘 리팩토링 PRD](docs/PRD-matching-refactor.md)
-- [리팩토링 GitHub PR #7](https://github.com/ParkRaechan/Java_practice_teampj-RandomChatting-/pull/7)
-- [기존 프로젝트 회고](https://parkrc1201log.tistory.com/24)
-
+## 📖 References  
+- [ 알고리즘 리팩토링 ](https://parkrc1201log.tistory.com/24)
 
 <details>
-<summary>🖼 기존 프로젝트 화면 및 추가 이미지 7장 보기</summary>
-
-![image](https://user-images.githubusercontent.com/100547978/180404963-79bddc51-88e0-4153-ad74-bcf849b2449f.png)  
-![image](https://user-images.githubusercontent.com/100547978/180404845-8c8d5506-91e3-464e-9144-29eb034f0622.png)  
-![image](https://user-images.githubusercontent.com/100547978/180404877-9d88f66a-87aa-4d1d-9e44-2d83d6bd0716.png)  
-![image](https://user-images.githubusercontent.com/100547978/180404914-67a19108-c203-4a6c-ace8-c610becbb23e.png)  
-![image](https://user-images.githubusercontent.com/100547978/180405121-686a0180-6ce2-4da1-a12f-6214fb7da992.png)  
-![image](https://user-images.githubusercontent.com/100547978/180405170-0d691f62-fca9-4142-ab59-4934637509f8.png)  
-![image](https://user-images.githubusercontent.com/100547978/180404331-e42e6bd8-b498-4725-ab83-a28f8fa3edd8.png)  
-
+<summary>웹사이트 프론트</summary>
+  
+![image](https://user-images.githubusercontent.com/100547978/180403606-7e34ac28-fc85-4df3-922c-ed95d2fa18fe.png)  
+  
+![image](https://user-images.githubusercontent.com/100547978/180403558-2d98d8d3-5af8-47c0-997d-19743d2f1568.png)  
 </details>
