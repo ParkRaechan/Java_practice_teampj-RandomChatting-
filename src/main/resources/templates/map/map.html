@@ -24,7 +24,7 @@
 <button onclick="markerAdd()">마커 추가</button>
 <button onclick="getNearUser()">가까운 유저 찾기</button>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c0c70cdffec83cdf87c92f2c70029adc&libraries=services,clusterer,drawing"></script>
+<script th:if="${kakaoJavascriptKey != null and !#strings.isEmpty(kakaoJavascriptKey)}" th:src="|https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoJavascriptKey}&libraries=services,clusterer,drawing|"></script>
 <script src="/js/map.js" type="text/javascript"></script>
 <div th:replace="footer.html :: footer"></div>
 </body>
